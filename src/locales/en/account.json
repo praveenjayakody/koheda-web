@@ -1,0 +1,9 @@
+{
+    "logout": "Log Out",
+    "passwordChanged": "Password changed successfully",
+
+    "changePassword": "Change Password",
+    "changePasswordSubheading": "Do note that changing the password will log you out of all devices",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password"
+}
