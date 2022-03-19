@@ -115,7 +115,7 @@ export default function Buy() {
           {/* Chart */}
           <Grid item xs={12} md={8} lg={9}>
             <Paper className={fixedHeightPaper}>
-              <p>Hi {Auth.userInfo.name}</p>
+              <p>Hi {Auth.userInfo.name.split(" ")[0]}</p>
             </Paper>
           </Grid>
           {/* Recent Deposits */}
