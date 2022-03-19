@@ -1,3 +1,4 @@
+import XCache from "../XCache";
 import { XStorage as xsto } from "../XStorage";
 export class Auth {
     /**
@@ -7,6 +8,7 @@ export class Auth {
     static userInfo; //This can be used to store user details sent over during auth
 
     static async authenticate (username, password) {
+        const cachePath = "user-info";
         try {
             let response = await fetch(this.serverUrl + 'api/auth/login', {
                 method: 'post',
@@ -22,6 +24,7 @@ export class Auth {
                 })).toString()
             });
             let responseJson = await response.json();
+            XCache.store(cachePath, responseJson.user);
             this.userInfo = responseJson.user;
             return responseJson;
         } catch (error) {
@@ -32,6 +35,7 @@ export class Auth {
         /**
          * gauthenticate starts flow of backend auth using idToken returned from Google Sign In
          */
+        const cachePath = "user-info";
         try {
             let response = await fetch(this.serverUrl + 'api/auth/gauth', {
                 method: 'POST',
@@ -45,7 +49,7 @@ export class Auth {
                 })).toString()
             });
             let responseJson = await response.json();
-
+            XCache.store(cachePath, responseJson.user);
             this.userInfo = responseJson.user;
             return responseJson;
         } catch (error) {
@@ -53,24 +57,40 @@ export class Auth {
         }
     }
     static async verifyToken () {
-        const userToken = xsto("token");
+        const userToken = xsto.get("token");
+        const cachePath = "user-info";
+
+        let cache = await XCache.load(cachePath);
+
         try {
-            let response = await fetch(this.serverUrl + 'api/auth/verify_token', {
+            let response = await fetch(this.serverUrl + 'api/auth/verifyToken', {
                 method: 'POST',
+                mode: 'cors',
+                withCredentials: true,
+                credentials: 'include',
                 headers: {
+                    'Authorization': "Bearer " + userToken,
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    token: userToken 
-                })
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                }
             });
             let responseJson = await response.json();
-            this.userInfo = responseJson;
-            console.log(this.userInfo);
+            if (response.status === 200) {
+                this.userInfo = responseJson;
+            } else {
+                return {error: "token_expired"};
+            }
             return responseJson;
         } catch (error) {
             console.error(error);
+            if (cache == null) {
+                //no user-info cache found. best is to sign out user and clear cache
+                return {error: "network_fail"};
+            } else {
+                //if cache found, return that
+                this.userInfo = cache; //load cache as userInfo
+                return cache;
+            }
         }
     }
     static async logOut () {

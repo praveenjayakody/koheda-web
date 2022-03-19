@@ -14,6 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import { XStorage as xsto } from '../util/XStorage.js'
 
 import { useTranslation } from "react-i18next";
+import { Auth } from "../util/Api/Auth";
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -114,6 +115,7 @@ export default function Buy() {
           {/* Chart */}
           <Grid item xs={12} md={8} lg={9}>
             <Paper className={fixedHeightPaper}>
+              <p>Hi {Auth.userInfo.name}</p>
             </Paper>
           </Grid>
           {/* Recent Deposits */}
