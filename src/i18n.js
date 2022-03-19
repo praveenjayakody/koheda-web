@@ -11,12 +11,14 @@ i18n
     .init({
         resources: {
             en: {
+                welcome: require('./locales/en/welcome.json'),
                 general: require('./locales/en/general.json'),
                 home: require('./locales/en/home.json'),
                 account: require('./locales/en/account.json'),
                 title: require('./locales/en/title.json'),
             },
             si: {
+                welcome: require('./locales/si/welcome.json'),
                 general: require('./locales/si/general.json'),
                 home: require('./locales/si/home.json'),
                 account: require('./locales/si/account.json'),

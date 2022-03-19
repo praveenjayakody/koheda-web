@@ -1,0 +1,10 @@
+{
+    "hi": "Hi {{name}}!",
+    "tagline": "Where can I find",
+    "placeholder": "Select Essentials...",
+
+    "item": {
+        "petrol-92": "Petrol 92",
+        "petrol-95": "Petrol 95"
+    }
+}
