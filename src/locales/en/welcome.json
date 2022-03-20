@@ -1,6 +1,7 @@
 {
     "hi": "Hi {{name}}!",
-    "tagline": "Where can I find",
+    "tagline_search": "Where can I find",
+    "tagline_add": "I know where to find",
     "placeholder": "Select Essentials...",
 
     "item": {

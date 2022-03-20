@@ -70,6 +70,8 @@ export default function Welcome() {
 		xsto.set("lang", language);
 	}, [language]);
 
+  const [mode, setMode] = useState("search");
+
   const [items, setItems] = useState([
     "petrol-92",
     "petrol-95"
@@ -90,6 +92,19 @@ export default function Welcome() {
               }
             </ButtonGroup>
 					</Grid>
+          <Grid item container justifyContent="center">
+            <Select
+              value={mode}
+              onChange={(e) => {
+                setMode(e.target.value);
+              }}
+              color="secondary"
+              style={{marginTop: 10}}
+            >
+              <MenuItem value={"add"}>{"Add Locations"}</MenuItem>
+              <MenuItem value={"search"}>{"Search Locations"}</MenuItem>
+            </Select>
+          </Grid>
           <Grid item>
             <Grow in={true} style={{ transformOrigin: '0 0 0' }}>
               <p className={classes.hiMessage}>{t("welcome:hi", {name: Auth.userInfo.name.split(" ")[0]})}</p>
@@ -102,7 +117,7 @@ export default function Welcome() {
                 style={{ transformOrigin: '0 0 0' }}
                 {...(true ? { timeout: 1000 } : {})}
               >
-                <p className={classes.whereBranding}>{t("welcome:tagline")}</p>
+                <p className={classes.whereBranding}>{t("welcome:tagline"+ "_" + mode)}</p>
               </Grow>
             </Grid>
             <Grid item xs={12}>
@@ -116,7 +131,7 @@ export default function Welcome() {
                   id="demo-simple-select-outlined"
                   defaultValue={"none"}
                   onChange={(e) => {
-                    window.location.href = "map/" + e.target.value;
+                    window.location.href = mode + "/" + e.target.value;
                   }}
                   className={classes.whereDropdown}
                   fullWidth

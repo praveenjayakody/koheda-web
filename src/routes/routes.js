@@ -40,7 +40,7 @@ export default function Routes() {
 				<Route path="/orders" component={Orders} isPrivate />
 				<Route path="/account" component={Account} isPrivate />
 				<Route path="/welcome" component={Welcome} isPrivate />
-				<Route path="/map/:itemId" component={Geo} isPrivate />
+				<Route path="/search/:itemId" component={Geo} isPrivate />
 
 				{/* redirect user to SignIn page if route does not exist and user is not authenticated */}
 				<Route component={SignIn} />
