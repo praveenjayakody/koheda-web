@@ -24,9 +24,13 @@ import { useTranslation } from "react-i18next";
 import { Auth } from "../util/Api/Auth";
 
 import { languages } from "../locales/list"
+
 import {
   useParams
 } from "react-router-dom";
+import { Wrapper } from "@googlemaps/react-wrapper";
+
+import { GMap } from "../components/Maps";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,23 +48,34 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Welcome() {
+export default function Geo() {
   const classes = useStyles();
 
   const { t, i18n } = useTranslation(['geo']);
 
   const { itemId } = useParams();
 
+  const _mapRender = (status) => {
+    return <h1>{status}</h1>;
+  };
+
+  const [clicks, setClicks] = React.useState([]);
+  const [zoom, setZoom] = React.useState(8); // initial zoom
+  const [center, setCenter] = React.useState({
+    lat: 7.765676800293702,
+    lng: 80.76784081246987,
+  });
+
   return (<div className={classes.root}>
 		<CssBaseline />
     <main className={classes.content}>
-      <Container maxWidth="lg" className={classes.container}>
-        <Grid container direction="column">
-          <Grid item>
-            <p>{itemId}</p>
-          </Grid>
-        </Grid>
-      </Container>
+      <Wrapper apiKey={process.env.REACT_APP_GAPI_KEY} render={_mapRender}>
+        <GMap
+          center={center}
+          zoom={zoom}
+          style={{ flexGrow: "1", height: "100%" }}
+        />
+      </Wrapper>
     </main>
   </div>);
 }
