@@ -82,3 +82,29 @@ export const GMap = ({ onClick, onIdle, children, style, ...options }) => {
   );
   // [END maps_react_map_component_return]
 };
+
+export const Marker = (props) => {
+  const [marker, setMarker] = React.useState();
+
+  React.useEffect(() => {
+    if (!marker) {
+      setMarker(new window.google.maps.Marker());
+    }
+
+    // remove marker from map on unmount
+    return () => {
+      if (marker) {
+        marker.setMap(null);
+      }
+    };
+  }, [marker]);
+  React.useEffect(() => {
+    if (marker) {
+      marker.setOptions(props);
+      if (typeof props.onClick !== "undefined") {
+        marker.addListener("click", props.onClick);
+      }
+    }
+  }, [marker, props]);
+  return null;
+};

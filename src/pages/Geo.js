@@ -30,7 +30,9 @@ import {
 } from "react-router-dom";
 import { Wrapper } from "@googlemaps/react-wrapper";
 
-import { GMap } from "../components/Maps";
+import { GMap, Marker } from "../components/Maps";
+
+import fuelStation from "../images/pins/fuel-station.png";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -74,7 +76,28 @@ export default function Geo() {
           center={center}
           zoom={zoom}
           style={{ flexGrow: "1", height: "100%" }}
-        />
+        >
+          <Marker
+            optimized={false}
+            onClick={(e) => console.log("sdsds", e.latLng.lat())}
+            title={"Hello"}
+            icon={"https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"}
+            position={{
+              "lat": 6.8612396824547295,
+              "lng": 80.69642967965737
+            }}
+          />
+          <Marker
+            optimized={false}
+            onClick={(e) => console.log("sdsds", e.latLng.lat())}
+            title={"Hello"}
+            icon={fuelStation}
+            position={{
+              "lat": 7.8612396824547295,
+              "lng": 80.69642967965737
+            }}
+          />
+        </GMap>
       </Wrapper>
     </main>
   </div>);
