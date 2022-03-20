@@ -10,6 +10,7 @@ import Buy from "../pages/Buy.js";
 import Orders from "../pages/Orders.js";
 import Account from "../pages/Account.js";
 import Welcome from "../pages/Welcome.js";
+import Geo from "../pages/Geo.js";
 
 export default function Routes() {
 	const [loading, setLoading] = useState(true);
@@ -39,6 +40,7 @@ export default function Routes() {
 				<Route path="/orders" component={Orders} isPrivate />
 				<Route path="/account" component={Account} isPrivate />
 				<Route path="/welcome" component={Welcome} isPrivate />
+				<Route path="/map/:itemId" component={Geo} isPrivate />
 
 				{/* redirect user to SignIn page if route does not exist and user is not authenticated */}
 				<Route component={SignIn} />

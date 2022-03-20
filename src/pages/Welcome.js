@@ -116,7 +116,7 @@ export default function Welcome() {
                   id="demo-simple-select-outlined"
                   defaultValue={"none"}
                   onChange={(e) => {
-                    console.log(e.target.value);
+                    window.location.href = "map/" + e.target.value;
                   }}
                   className={classes.whereDropdown}
                   fullWidth
