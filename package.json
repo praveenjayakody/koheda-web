@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://where.lk/app",
   "dependencies": {
+    "@googlemaps/react-wrapper": "^1.1.27",
     "@material-ui/core": "^4.9.11",
     "@material-ui/icons": "^4.9.1",
     "@testing-library/jest-dom": "^4.2.4",
