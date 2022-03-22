@@ -3,6 +3,8 @@
     "tagline_search": "Where can I find",
     "tagline_add": "I know where to find",
     "placeholder": "Select Essentials...",
+    "add_locations": "Add Locations",
+    "search_locations": "Search Locations",
 
     "item": {
         "petrol-92": "Petrol 92",

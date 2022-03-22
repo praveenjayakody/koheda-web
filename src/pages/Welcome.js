@@ -102,8 +102,8 @@ export default function Welcome() {
                 color="secondary"
                 style={{marginTop: 10}}
               >
-                <MenuItem value={"add"}>{"Add Locations"}</MenuItem>
-                <MenuItem value={"search"}>{"Search Locations"}</MenuItem>
+                <MenuItem value={"add"}>{t("welcome:add_locations")}</MenuItem>
+                <MenuItem value={"search"}>{t("welcome:search_locations")}</MenuItem>
               </Select>
             </Grid>
           : null}

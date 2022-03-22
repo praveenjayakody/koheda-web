@@ -1,4 +1,13 @@
 {
     "hi": "ආයුබෝවන් {{name}}!",
-    "tagline": "කොහෙද"
+    "tagline_search": "කොහෙද",
+    "tagline_add": "මම දන්නවා කොහෙන් හොයන්නද කියලා",
+    "placeholder": "අත්‍යවශ්‍ය දෑ",
+    "add_locations": "ස්ථාන එකතු කරන්න",
+    "search_locations": "ස්ථාන සොයන්න",
+
+    "item": {
+        "petrol-92": "පෙට්‍රල් 92",
+        "petrol-95": "පෙට්‍රල් 95"
+    }
 }
