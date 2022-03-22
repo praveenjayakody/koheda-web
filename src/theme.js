@@ -1,9 +1,9 @@
 import { createTheme } from '@material-ui/core/styles';
-import { yellow, orange } from '@material-ui/core/colors';
+import { yellow, green } from '@material-ui/core/colors';
 
 const theme = createTheme({
   palette: {
-    primary: orange,
+    primary: green,
     secondary: yellow,
   },
 });
