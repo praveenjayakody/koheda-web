@@ -77,6 +77,7 @@ export class Auth {
             let responseJson = await response.json();
             if (response.status === 200) {
                 this.userInfo = responseJson;
+                XCache.store(cachePath, responseJson);
             } else {
                 return {error: "token_expired"};
             }
