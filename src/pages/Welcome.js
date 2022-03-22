@@ -92,19 +92,21 @@ export default function Welcome() {
               }
             </ButtonGroup>
 					</Grid>
-          <Grid item container justifyContent="center">
-            <Select
-              value={mode}
-              onChange={(e) => {
-                setMode(e.target.value);
-              }}
-              color="secondary"
-              style={{marginTop: 10}}
-            >
-              <MenuItem value={"add"}>{"Add Locations"}</MenuItem>
-              <MenuItem value={"search"}>{"Search Locations"}</MenuItem>
-            </Select>
-          </Grid>
+          {Auth.userInfo.permissions.indexOf("add locations") > -1 ?
+            <Grid item container justifyContent="center">
+              <Select
+                value={mode}
+                onChange={(e) => {
+                  setMode(e.target.value);
+                }}
+                color="secondary"
+                style={{marginTop: 10}}
+              >
+                <MenuItem value={"add"}>{"Add Locations"}</MenuItem>
+                <MenuItem value={"search"}>{"Search Locations"}</MenuItem>
+              </Select>
+            </Grid>
+          : null}
           <Grid item>
             <Grow in={true} style={{ transformOrigin: '0 0 0' }}>
               <p className={classes.hiMessage}>{t("welcome:hi", {name: Auth.userInfo.name.split(" ")[0]})}</p>
