@@ -9,6 +9,7 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import Snackbar from '@material-ui/core/Snackbar';
 
 import Grow from '@material-ui/core/Grow';
 import Slide from '@material-ui/core/Slide';
@@ -70,6 +71,41 @@ export default function Welcome() {
 		xsto.set("lang", language);
 	}, [language]);
 
+  const [snackbar, setSnackbar] = useState(null);
+
+  // get geolocation
+  const [location, setLocation] = useState(undefined);
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        p => {
+          let geoObject = {};
+          geoObject = {
+            lat: p.coords.latitude,
+            long: p.coords.longitude
+          };
+          setLocation(geoObject);
+        },
+        error => {
+          switch(error.code) {
+            case error.PERMISSION_DENIED:
+              setSnackbar(t("welcome:location_errors.denied"));
+              break;
+            case error.POSITION_UNAVAILABLE:
+              setSnackbar(t("welcome:location_errors.unavailable"));
+              break;
+            case error.TIMEOUT:
+              setSnackbar(t("welcome:location_errors.timeout"));
+              break;
+            case error.UNKNOWN_ERROR:
+              setSnackbar(t("welcome:location_errors.unknown"));
+              break;
+          }
+        }
+      );
+    }
+  }, []);
+
   const [mode, setMode] = useState("search");
 
   const [items, setItems] = useState([
@@ -77,12 +113,12 @@ export default function Welcome() {
     "petrol-95"
   ]);
   useEffect(() => {
-
   }, []);
 
   return (<div className={classes.root}>
 		<CssBaseline />
     <main className={classes.content}>
+      <Snackbar open={snackbar !== null} autoHideDuration={6000} onClose={() => setSnackbar(null)} message={snackbar} />
       <Container maxWidth="lg" className={classes.container}>
         <Grid container direction="column">
           <Grid item container lg={12} xs={12} justifyContent="center">

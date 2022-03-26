@@ -6,6 +6,13 @@
     "add_locations": "Add Locations",
     "search_locations": "Search Locations",
 
+    "location_errors": {
+        "denied": "Geolocation will not be used",
+        "unavailable": "Location information is unavailable",
+        "timeout": "Please accept the user location permission",
+        "unknown": "Unknown error occurred during geolocation"
+    },
+
     "item": {
         "petrol-92": "Petrol 92",
         "petrol-95": "Petrol 95"
