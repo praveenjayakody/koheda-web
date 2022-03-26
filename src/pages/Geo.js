@@ -22,6 +22,7 @@ import { XStorage as xsto } from '../util/XStorage.js'
 
 import { useTranslation } from "react-i18next";
 import { Auth } from "../util/Api/Auth";
+import { Place } from "../util/Api/Place";
 
 import { languages } from "../locales/list"
 
@@ -68,6 +69,15 @@ export default function Geo() {
     lng: 80.76784081246987,
   });
 
+  // places
+  const [places, setPlaces] = useState([]);
+  useEffect(() => {( async () => {
+    setPlaces(await Place.list({ facility: itemId }));
+  })()}, []);
+  useEffect(() => {
+    console.log(places);
+  }, [places]);
+
   return (<div className={classes.root}>
 		<CssBaseline />
     <main className={classes.content}>
@@ -77,26 +87,16 @@ export default function Geo() {
           zoom={zoom}
           style={{ flexGrow: "1", height: "100%" }}
         >
-          <Marker
-            optimized={false}
-            onClick={(e) => console.log("sdsds", e.latLng.lat())}
-            title={"Hello"}
-            icon={"https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"}
-            position={{
-              "lat": 6.8612396824547295,
-              "lng": 80.69642967965737
-            }}
-          />
-          <Marker
-            optimized={false}
-            onClick={(e) => console.log("sdsds", e.latLng.lat())}
-            title={"Hello"}
-            icon={fuelStation}
-            position={{
-              "lat": 7.8612396824547295,
-              "lng": 80.69642967965737
-            }}
-          />
+          {places.map((p, i) =>(
+            <Marker
+              key={i}
+              optimized={false}
+              onClick={(e) => console.log("sdsds", e.latLng.lat())}
+              title={p.name}
+              icon={fuelStation}
+              position={{ lat: p.location.coordinates[1], lng: p.location.coordinates[0] }}
+            />
+          ))}
         </GMap>
       </Wrapper>
     </main>
