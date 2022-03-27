@@ -82,7 +82,7 @@ export default function Welcome() {
           let geoObject = {};
           geoObject = {
             lat: p.coords.latitude,
-            long: p.coords.longitude
+            lng: p.coords.longitude
           };
           setLocation(geoObject);
         },
@@ -169,7 +169,13 @@ export default function Welcome() {
                   id="demo-simple-select-outlined"
                   defaultValue={"none"}
                   onChange={(e) => {
-                    window.location.href = mode + "/" + e.target.value;
+                    let url = mode + "/" + e.target.value;
+
+                    if (typeof location !== "undefined") {
+                      url += "/" + location.lat + "," + location.lng;
+                    }
+
+                    window.location.href = url;
                   }}
                   className={classes.whereDropdown}
                   fullWidth

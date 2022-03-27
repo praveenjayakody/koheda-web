@@ -14,6 +14,8 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog';
 
 import Grow from '@material-ui/core/Grow';
 import Slide from '@material-ui/core/Slide';
@@ -56,7 +58,7 @@ export default function Geo() {
 
   const { t, i18n } = useTranslation(['geo']);
 
-  const { itemId } = useParams();
+  const { itemId, geoLocation } = useParams();
 
   const _mapRender = (status) => {
     return <h1>{status}</h1>;
@@ -78,9 +80,36 @@ export default function Geo() {
     console.log(places);
   }, [places]);
 
+  // set location and zoom on it if present
+  useEffect(() => {
+    let thisLocation = undefined;
+    if (typeof geoLocation !== "undefined" && geoLocation !== "") {
+      thisLocation = geoLocation.split(",");
+      thisLocation = {
+        lat: parseFloat(thisLocation[0]),
+        lng: parseFloat(thisLocation[1])
+      }
+    } else if (places.length > 0) {
+      thisLocation = {
+        lat: parseFloat(places[0].location.coordinates[1]),
+        lng: parseFloat(places[0].location.coordinates[0])
+      }
+    }
+    if (typeof thisLocation !== "undefined") {
+      setCenter(thisLocation);
+      setZoom(12);
+    }
+  }, [places]);
+
+  // marker selection
+  const [selectedMap, setSelectedMarker] = useState(null);
+
   return (<div className={classes.root}>
 		<CssBaseline />
     <main className={classes.content}>
+      <Dialog onClose={() => setSelectedMarker(null)} open={selectedMap != null}>
+        <DialogTitle>Set backup account</DialogTitle>
+      </Dialog>
       <Wrapper apiKey={process.env.REACT_APP_GAPI_KEY} render={_mapRender}>
         <GMap
           center={center}
@@ -91,7 +120,10 @@ export default function Geo() {
             <Marker
               key={i}
               optimized={false}
-              onClick={(e) => console.log("sdsds", e.latLng.lat())}
+              onClick={(e) => {
+                console.log(e);
+                setSelectedMarker("");
+              }}
               title={p.name}
               icon={fuelStation}
               position={{ lat: p.location.coordinates[1], lng: p.location.coordinates[0] }}
