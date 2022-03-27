@@ -16,6 +16,7 @@ import SentimentDissatisfiedIcon from '@material-ui/icons/SentimentDissatisfied'
 import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied';
 import SentimentSatisfiedAltIcon from '@material-ui/icons/SentimentSatisfiedAltOutlined';
 import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
+import { DialogActions, DialogContent, DialogContentText } from "@material-ui/core";
 
 import { useTranslation } from "react-i18next";
 import { Place } from "../util/Api/Place";
@@ -28,7 +29,6 @@ import { Wrapper } from "@googlemaps/react-wrapper";
 import { GMap, Marker } from "../components/Maps";
 
 import fuelStation from "../images/pins/fuel-station.png";
-import { DialogActions, DialogContent, DialogContentText } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
