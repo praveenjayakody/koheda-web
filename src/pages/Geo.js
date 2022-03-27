@@ -1,32 +1,24 @@
 import React, { useEffect, useState } from "react";
-import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import Navigation from "../components/Navigation";
+
 
 import CssBaseline from '@material-ui/core/CssBaseline';
-import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 
-import Box from '@material-ui/core/Box';
-import Container from '@material-ui/core/Container';
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
-
-import Grow from '@material-ui/core/Grow';
-import Slide from '@material-ui/core/Slide';
-
-import { XStorage as xsto } from '../util/XStorage.js'
+import Rating from '@material-ui/lab/Rating';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import Call from '@material-ui/icons/Call';
+import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
+import SentimentDissatisfiedIcon from '@material-ui/icons/SentimentDissatisfied';
+import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied';
+import SentimentSatisfiedAltIcon from '@material-ui/icons/SentimentSatisfiedAltOutlined';
+import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
 
 import { useTranslation } from "react-i18next";
-import { Auth } from "../util/Api/Auth";
 import { Place } from "../util/Api/Place";
-
-import { languages } from "../locales/list"
 
 import {
   useParams
@@ -36,6 +28,7 @@ import { Wrapper } from "@googlemaps/react-wrapper";
 import { GMap, Marker } from "../components/Maps";
 
 import fuelStation from "../images/pins/fuel-station.png";
+import { DialogActions, DialogContent, DialogContentText } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,6 +45,34 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(1),
   },
 }));
+
+const customIcons = {
+  1: {
+    icon: <SentimentVeryDissatisfiedIcon />,
+    label: 'Very Dissatisfied',
+  },
+  2: {
+    icon: <SentimentDissatisfiedIcon />,
+    label: 'Dissatisfied',
+  },
+  3: {
+    icon: <SentimentSatisfiedIcon />,
+    label: 'Neutral',
+  },
+  4: {
+    icon: <SentimentSatisfiedAltIcon />,
+    label: 'Satisfied',
+  },
+  5: {
+    icon: <SentimentVerySatisfiedIcon />,
+    label: 'Very Satisfied',
+  },
+};
+
+function IconContainer(props) {
+  const { value, ...other } = props;
+  return <span {...other}>{customIcons[value].icon}</span>;
+}
 
 export default function Geo() {
   const classes = useStyles();
@@ -102,13 +123,49 @@ export default function Geo() {
   }, [places]);
 
   // marker selection
-  const [selectedMap, setSelectedMarker] = useState(null);
+  const [selectedPlace, setSelectedMarker] = useState({});
 
   return (<div className={classes.root}>
 		<CssBaseline />
     <main className={classes.content}>
-      <Dialog onClose={() => setSelectedMarker(null)} open={selectedMap != null}>
-        <DialogTitle>Set backup account</DialogTitle>
+      <Dialog onClose={() => setSelectedMarker({})} open={typeof selectedPlace.id !== "undefined"}>
+        <DialogTitle>{selectedPlace.name}</DialogTitle>
+        <DialogContent>
+          <DialogContentText style={{textAlign: "center"}}>
+            {
+              typeof selectedPlace.updated_at != "undefined" ?
+              t("last_updated", { date: (new Date(selectedPlace.updated_at)).toLocaleString() })
+              : ""
+            }
+          </DialogContentText>
+          <Grid container justifyContent="center">
+            <Grid item>
+              <Rating 
+                value={(() => {
+                  let rating = typeof selectedPlace.facilities !== "undefined" ?
+                  selectedPlace.facilities.find(e => e.facility == itemId).quality/2
+                  :0;
+                  if (rating == 0) rating = 1;
+                  return rating;
+                })()}
+                IconContainerComponent={IconContainer}
+                readOnly
+              />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          {typeof selectedPlace.mobile === "undefined" || selectedPlace.mobile === null ? null:
+            <Button fullWidth endIcon={<Call />} onClick={() => window.open("tel:" + selectedPlace.mobile)}>
+              {t("call")}
+            </Button>
+          }
+          <Button fullWidth endIcon={<ArrowForwardIcon />} onClick={() => {
+            let url = "";
+            url = "https://www.google.com/maps/dir/?api=1&destination=" + selectedPlace.location.coordinates[1] +"," + selectedPlace.location.coordinates[0];
+            window.open(url);
+          }}>{t("navigate")}</Button>
+        </DialogActions>
       </Dialog>
       <Wrapper apiKey={process.env.REACT_APP_GAPI_KEY} render={_mapRender}>
         <GMap
@@ -121,8 +178,7 @@ export default function Geo() {
               key={i}
               optimized={false}
               onClick={(e) => {
-                console.log(e);
-                setSelectedMarker("");
+                setSelectedMarker(p);
               }}
               title={p.name}
               icon={fuelStation}
