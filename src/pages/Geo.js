@@ -5,6 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
 import Grid from '@material-ui/core/Grid';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
@@ -16,7 +17,9 @@ import SentimentDissatisfiedIcon from '@material-ui/icons/SentimentDissatisfied'
 import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied';
 import SentimentSatisfiedAltIcon from '@material-ui/icons/SentimentSatisfiedAltOutlined';
 import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
-import { DialogActions, DialogContent, DialogContentText } from "@material-ui/core";
+import { DialogActions, DialogContent, DialogContentText, Typography } from "@material-ui/core";
+
+import { XStorage as xsto } from '../util/XStorage.js'
 
 import { useTranslation } from "react-i18next";
 import { Place } from "../util/Api/Place";
@@ -108,6 +111,8 @@ export default function Geo() {
     return <h1>{status}</h1>;
   };
 
+  const [snackbar, setSnackbar] = useState(null);
+
   const [clicks, setClicks] = React.useState([]);
   const [zoom, setZoom] = React.useState(8); // initial zoom
   const [center, setCenter] = React.useState({
@@ -148,9 +153,18 @@ export default function Geo() {
   // marker selection
   const [selectedPlace, setSelectedMarker] = useState({});
 
+  // rate place (and facility)
+  const _doRate = async (e) => {
+    if (xsto.load("ratingSubmitted") !== null || window.confirm(t("submit_rating"))) {
+      xsto.set("ratingSubmitted", true);
+      setSnackbar(t("rating_appreciated"));
+    }
+  }
+
   return (<div className={classes.root}>
 		<CssBaseline />
     <main className={classes.content}>
+      <Snackbar open={snackbar !== null} autoHideDuration={6000} onClose={() => setSnackbar(null)} message={snackbar} />
       <Dialog onClose={() => setSelectedMarker({})} open={typeof selectedPlace.id !== "undefined"}>
         <DialogTitle>{selectedPlace.name}</DialogTitle>
         <DialogContent>
@@ -161,7 +175,7 @@ export default function Geo() {
               : ""
             }
           </DialogContentText>
-          <Grid container justifyContent="center">
+          <Grid container alignItems="center" direction="column">
             <Grid item>
               <Rating 
                 value={(() => {
@@ -172,8 +186,12 @@ export default function Geo() {
                   return rating;
                 })()}
                 IconContainerComponent={IconContainer}
-                readOnly
+                onChange={_doRate}
+                name={"facility-rating"}
               />
+            </Grid>
+            <Grid item>
+              <Typography variant="caption" color="textSecondary">{t("encourage_rating")}</Typography>
             </Grid>
           </Grid>
         </DialogContent>
