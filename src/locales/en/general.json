@@ -1,3 +1,5 @@
 {
-    "submit": "Submit"
+    "submit": "Submit",
+    "network_error": "Network error occurred",
+    "validation_error": "Validation error occurred"
 }

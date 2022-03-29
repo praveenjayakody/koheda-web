@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
@@ -23,6 +24,7 @@ import { XStorage as xsto } from '../util/XStorage.js'
 
 import { useTranslation } from "react-i18next";
 import { Place } from "../util/Api/Place";
+import { Finding } from "../util/Api/Finding";
 
 import colorGradient from "javascript-color-gradient";
 
@@ -112,6 +114,7 @@ export default function Geo() {
   };
 
   const [snackbar, setSnackbar] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const [clicks, setClicks] = React.useState([]);
   const [zoom, setZoom] = React.useState(8); // initial zoom
@@ -157,13 +160,31 @@ export default function Geo() {
   const _doRate = async (e) => {
     if (xsto.load("ratingSubmitted") !== null || window.confirm(t("submit_rating"))) {
       xsto.set("ratingSubmitted", true);
-      setSnackbar(t("rating_appreciated"));
+
+      setLoading(true);
+      try {
+        let resp = await Finding.store({
+          place_id: selectedPlace.id,
+          facility: itemId,
+          rating: e.target.value
+        });
+        if (typeof resp.errors === 'undefined') {
+          setSnackbar(t("rating_appreciated"));
+        } else {
+          setSnackbar(t("general:validation_error"));
+        }
+      } catch (err) {
+        console.log(err);
+        setSnackbar(t("general:network_error"));
+      }
+      setLoading(false);
     }
   }
 
   return (<div className={classes.root}>
 		<CssBaseline />
     <main className={classes.content}>
+      {loading ? <LinearProgress color="secondary" style={{ position: "absolute", width: "100%", zIndex: 9000 }} />: null}
       <Snackbar open={snackbar !== null} autoHideDuration={6000} onClose={() => setSnackbar(null)} message={snackbar} />
       <Dialog onClose={() => setSelectedMarker({})} open={typeof selectedPlace.id !== "undefined"}>
         <DialogTitle>{selectedPlace.name}</DialogTitle>
