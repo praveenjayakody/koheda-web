@@ -115,19 +115,31 @@ export default function Welcome() {
   useEffect(() => {
   }, []);
 
+  const _signOut = async () => {
+    await Auth.logOut();
+    xsto.clear();
+    window.location.reload();
+  }
+
   return (<div className={classes.root}>
 		<CssBaseline />
     <main className={classes.content}>
       <Snackbar open={snackbar !== null} autoHideDuration={6000} onClose={() => setSnackbar(null)} message={snackbar} />
-      <Container maxWidth="lg" className={classes.container}>
-        <Grid container direction="column">
-          <Grid item container lg={12} xs={12} justifyContent="center">
+      <Container maxWidth="xl" className={classes.container}>
+        <Grid container>
+          <Grid item container lg={12} xs={12} justifyContent="space-between">
+            <Button onClick={_signOut}>Logout</Button>
             <ButtonGroup variant="text" color="secondary" disableElevation>
               {
                 languages.map((l, i) => <Button key={i} onClick={() => setLanguage(l.code)}>{l.label}</Button>)
               }
             </ButtonGroup>
-					</Grid>
+				  </Grid>
+        </Grid>
+      </Container>
+      <Container maxWidth="lg" className={classes.container}>
+        <Grid container direction="column">
+
           {Auth.userInfo.permissions.indexOf("add locations") > -1 ?
             <Grid item container justifyContent="center">
               <Select
