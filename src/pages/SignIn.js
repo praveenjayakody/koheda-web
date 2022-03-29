@@ -122,7 +122,15 @@ export default function SignIn() {
 									clientId={process.env.REACT_APP_GCLIENT_ID}
 									buttonText="Sign in with Google"
 									onSuccess={(e) => { _gSignIn(e.profileObj.email, e.tokenId); }}
-									onFailure={(e) => { alert("Unexpected error occured!"); console.log(e); }}
+									onFailure={(e) => {
+										console.log(e);
+										if (
+											e.error != "idpiframe_initialization_failed" &&
+											e.error != "popup_closed_by_user"
+										) {
+											alert("Unexpected error occured!");
+										}
+									}}
 								/>
 							</Grid>
 							<Grid item lg={4} xs={12}></Grid>
