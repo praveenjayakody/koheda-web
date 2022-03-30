@@ -13,3 +13,6 @@
 
 ## Translation
 > `npm install react-i18next i18next --save`
+
+## Terms and Conditions and Privacy Policy
+* Generated using https://policymaker.io/terms-conditions-ready/ and https://policymaker.io/privacy-policy-ready/
