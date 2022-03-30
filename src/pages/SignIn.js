@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from "react";
-import { Grid, Container, CssBaseline, Button, TextField } from '@material-ui/core';
+import { Grid, Container, CssBaseline, Button, TextField, Box, Typography, Link } from '@material-ui/core';
 
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,9 +11,10 @@ import Navigation from "../components/Navigation";
 
 import { GoogleLogin } from 'react-google-login';
 
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 
 import { languages } from "../locales/list"
+import "./SignIn.css"
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -34,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 	fullWidth: {
 		width: '100%'
+	},
+	logo: {
+		boxShadow: "rgb(0 0 0 / 20%) 0px 3px 3px -2px, rgb(0 0 0 / 14%) 0px 3px 4px 0px, rgb(0 0 0 / 12%) 0px 1px 8px 0px"
 	}
   }));
 
@@ -83,62 +87,51 @@ export default function SignIn() {
 
 
 	return (
-		<Grid container spacing={2}>
-			<Grid item lg={4} xs={1}></Grid>
-			<Grid item lg={4} xs={10}>
-				<Grid container spacing={2}>
-					<Grid item container lg={12} xs={12} justifyContent="center">
+		<Grid container spacing={2} justifyContent="center" alignItems="center" style={{ height: "100vh" }}>
+			<Grid item container justifyContent="center">
+
+				<Grid item container justifyContent="center">
+					<Grid item container justifyContent="center">
+						<img src={process.env.PUBLIC_URL + '/logo192.png'} className={"logo"}/>
+					</Grid>
+					<Grid item container lg={12} xs={12} justifyContent="center" style={{margin: 10}}>
 						{
 							languages.map((l, i) => <Button key={i} color="primary" onClick={() => setLanguage(l.code)}>{l.label}</Button>)
 						}
 					</Grid>
-					<Grid item lg={12} xs={12}>
-						<TextField
-							label={t('email')}
-							id="outlined-margin-none"
-							variant="outlined"
-							className={styles.fullWidth}
-							value={email} onChange={(e)=>{ setEmail(e.target.value); }} 
+					<Grid item container justifyContent="center" style={{marginBottom: 5}}>
+						<Typography variant="subtitle1">
+							<Trans i18nKey={"home:tagline"}>Find <strong>essentials</strong> with where.lk</Trans>
+						</Typography>
+					</Grid>
+					<Grid item container justifyContent="center">
+						<GoogleLogin
+							clientId={process.env.REACT_APP_GCLIENT_ID}
+							buttonText={t("signin_google")}
+							onSuccess={(e) => { _gSignIn(e.profileObj.email, e.tokenId); }}
+							onFailure={(e) => {
+								console.log(e);
+								if (
+									e.error != "idpiframe_initialization_failed" &&
+									e.error != "popup_closed_by_user"
+								) {
+									alert("Unexpected error occured!");
+								}
+							}}
 						/>
 					</Grid>
-					<Grid item lg={12} xs={12}>
-						<TextField
-							label={t('password')}
-							id="outlined-margin-none"
-							variant="outlined"
-							className={styles.fullWidth}
-							type="password"
-							value={password} onChange={(e)=>{ setPassword(e.target.value); }} 
-						/>
+					<Grid item container justifyContent="center" style={{marginTop: 30}} md={3}>
+						<Typography variant="caption" color="textSecondary" style={{textAlign: "center"}}>
+							<Trans i18nKey={"home:signin_policy"}>
+								text <Link href={process.env.PUBLIC_URL + "/tac.html"}>link</Link> j <Link href={process.env.PUBLIC_URL + "/pp.html"}>kk</Link>
+							</Trans>
+						</Typography>
 					</Grid>
-					<Grid item lg={12} xs={12}>
-						<Button variant="contained" color="primary" className={styles.fullWidth} onClick={_signIn}>{t("login")}</Button>
-					</Grid>
-					<Grid item lg={12} xs={12}>
-						<Grid container spacing={2}>
-							<Grid item lg={4} xs={12}></Grid>
-							<Grid item lg={4} xs={12}>
-								<GoogleLogin
-									clientId={process.env.REACT_APP_GCLIENT_ID}
-									buttonText="Sign in with Google"
-									onSuccess={(e) => { _gSignIn(e.profileObj.email, e.tokenId); }}
-									onFailure={(e) => {
-										console.log(e);
-										if (
-											e.error != "idpiframe_initialization_failed" &&
-											e.error != "popup_closed_by_user"
-										) {
-											alert("Unexpected error occured!");
-										}
-									}}
-								/>
-							</Grid>
-							<Grid item lg={4} xs={12}></Grid>
-						</Grid>
+					<Grid item container justifyContent="center">
+						<Typography variant="caption">{}</Typography>
 					</Grid>
 				</Grid>
 			</Grid>
-			<Grid item lg={4} xs={1}></Grid>
 		</Grid>
 	);
 }
