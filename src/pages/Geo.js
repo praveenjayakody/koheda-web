@@ -114,7 +114,7 @@ export default function Geo() {
   };
 
   const [snackbar, setSnackbar] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [clicks, setClicks] = React.useState([]);
   const [zoom, setZoom] = React.useState(8); // initial zoom
@@ -122,6 +122,19 @@ export default function Geo() {
     lat: 7.765676800293702,
     lng: 80.76784081246987,
   });
+
+  const [markersReady, setMarkersReady] = useState(false);
+  useEffect(() => {
+    // TODO: implement a more elegant way of waiting till the window.google object has become available
+    window.readyTimer = setInterval(() => {
+      console.log("Checking for window.google");
+      if (typeof window.google !== "undefined") {
+        setMarkersReady(true);
+        setLoading(false);
+        clearInterval(window.readyTimer);
+      }
+    }, 1000);
+  }, []);
 
   // places
   const [places, setPlaces] = useState([]);
@@ -235,7 +248,7 @@ export default function Geo() {
           zoom={zoom}
           style={{ flexGrow: "1", height: "100%" }}
         >
-          {places.map((p, i) =>(
+          {markersReady && places.map((p, i) =>(
             <Marker
               key={i}
               optimized={false}
