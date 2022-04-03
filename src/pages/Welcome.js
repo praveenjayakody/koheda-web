@@ -21,6 +21,8 @@ import { Auth } from "../util/Api/Auth";
 
 import { languages } from "../locales/list"
 
+const itemList = require("../util/Items");
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -108,10 +110,7 @@ export default function Welcome() {
 
   const [mode, setMode] = useState("search");
 
-  const [items, setItems] = useState([
-    "petrol-92",
-    "petrol-95"
-  ]);
+  const [items, setItems] = useState(itemList);
   useEffect(() => {
   }, []);
 
