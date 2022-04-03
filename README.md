@@ -1,6 +1,11 @@
 # la-react
 * A React frontend for la-server
 
+## Google Sign In
+* When inlcuding authorized javascript origins when creating the client ID, make sure to include URIs with the www prefix as well as without
+    + Seemingly, Google considers __www.example.com__ and __example.com__ as two different origins
+* Refer the homepage __.htaccess__ file for more info on how to structure HTTPS redirection without disrupting Google Sign In
+
 ## Environment files
 
 * .env.development sets the environment variables for `yarn start`
