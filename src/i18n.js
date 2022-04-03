@@ -17,6 +17,7 @@ i18n
                 account: require('./locales/en/account.json'),
                 title: require('./locales/en/title.json'),
                 geo: require('./locales/en/geo.json'),
+                addPlace: require('./locales/en/add_place.json'),
             },
             si: {
                 welcome: require('./locales/si/welcome.json'),
@@ -25,6 +26,7 @@ i18n
                 account: require('./locales/si/account.json'),
                 title: require('./locales/si/title.json'),
                 geo: require('./locales/si/geo.json'),
+                addPlace: require('./locales/si/add_place.json'),
             }
         },
         lng: 'en',

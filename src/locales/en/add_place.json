@@ -1,0 +1,10 @@
+{
+    "add_place": "Add new place",
+    "add_place_desc": "Fill in the following form to send the place for approval. After the approval process, the place will be added to the system",
+    "coordinates": "Coordinates",
+    "facilities": "Facility Ratings",
+
+    "errors": {
+        "atleastOneFacility": "At least one facility should be present!"
+    }
+}

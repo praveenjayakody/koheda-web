@@ -271,6 +271,7 @@ export default function Geo() {
           color="secondary"
           className={classes.floatingButton}
           endIcon={<SendIcon />}
+          onClick={() => window.location.href = process.env.REACT_APP_BASENAME + "/add/" + itemId + "/" + selection.lat + "," + selection.lng}
         >
           {t("add_place")}
         </Button>
