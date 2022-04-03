@@ -7,6 +7,7 @@ import { XStorage as xsto } from '../util/XStorage.js'
 export default function RouteWrapper({
   component: Component,
   isPrivate,
+  children,
   ...rest
 }) {
   const token = xsto.get("token");
@@ -32,5 +33,9 @@ export default function RouteWrapper({
   /**
    * If not included on both previous cases, redirect user to the desired route.
    */
-  return <Route {...rest} component={Component} />;
+  if (typeof children === "undefined") {
+    return <Route {...rest} component={Component} />;
+  } else {
+    return <Route {...rest}>{children}</Route>
+  }
 }
