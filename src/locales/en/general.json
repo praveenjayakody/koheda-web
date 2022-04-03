@@ -1,5 +1,12 @@
 {
     "submit": "Submit",
     "network_error": "Network error occurred",
-    "validation_error": "Validation error occurred"
+    "validation_error": "Validation error occurred",
+    "name": "Name",
+    "mobile": "Mobile number",
+
+    "item": {
+        "petrol-92": "Petrol 92",
+        "petrol-95": "Petrol 95"
+    }
 }

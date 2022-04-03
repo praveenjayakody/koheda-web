@@ -192,7 +192,7 @@ export default function Welcome() {
                   fullWidth
                   color="secondary"
                 >
-                  {items.map((o, i) => <MenuItem key={i} value={o} style={{fontSize: "60px"}}>{t("welcome:item." + o)}</MenuItem>)}
+                  {items.map((o, i) => <MenuItem key={i} value={o} style={{fontSize: "60px"}}>{t("general:item." + o)}</MenuItem>)}
                   <MenuItem value={"none"} style={{fontSize: "60px"}}>{t("welcome:placeholder")}</MenuItem>
                 </Select>
               </Slide>
