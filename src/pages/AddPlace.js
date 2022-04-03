@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Snackbar from '@material-ui/core/Snackbar';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 import Grow from '@material-ui/core/Grow';
 import Slide from '@material-ui/core/Slide';
@@ -30,6 +31,9 @@ import { Xui as $x } from "../util/Xui"
 import { Typography } from "@material-ui/core";
 
 import RemoveIcon from '@material-ui/icons/Clear';
+
+import { Place } from "../util/Api/Place";
+import { Finding } from "../util/Api/Finding";
 
 const itemList = require("../util/Items");
 
@@ -62,7 +66,7 @@ const FacilitySlider  =  ({ name, onChange, onDelete, value }) => (
         step={1}
         marks
         min={0}
-        max={5}
+        max={10}
         style={{width: "100%"}}
         onChange={(e, v) => onChange(v)}
       />
@@ -98,8 +102,31 @@ export default function AddPlace() {
     setLoading(true);
 
     const values = $x.parseForm(e);
-    values['facilities'] = facilityList;
     console.log(values);
+
+    try {
+      const thisPlace = await Place.store(values);
+      if (typeof thisPlace.errors !== "undefined") {
+        setErrors(thisPlace.errors);
+      } else {
+        const theseFacilities = Object.keys(facilityList);
+
+        for (let i = 0; i < theseFacilities.length; i++) {
+          if (facilityList[theseFacilities[i]] !== null) {
+            await Finding.store({
+              facility: theseFacilities[i],
+              place_id: thisPlace.id,
+              rating: parseInt(facilityList[theseFacilities[i]])
+            });
+          }
+        }
+
+        window.location.href = process.env.REACT_APP_BASENAME + "/add/";
+      }
+    } catch (e) {
+      setSnackbar(t("general:network_error"));
+      console.log(e);
+    }
 
     setLoading(false);
   }
@@ -107,6 +134,7 @@ export default function AddPlace() {
   return (<div className={classes.root}>
 		<CssBaseline />
     <main className={classes.content}>
+      {loading ? <LinearProgress color="secondary" style={{ position: "absolute", width: "80%" }} />: null}
       <Snackbar open={snackbar !== null} autoHideDuration={6000} onClose={() => setSnackbar(null)} message={snackbar} />
       <Container maxWidth="lg" className={classes.container}>
         <Grid container direction="column">
@@ -124,8 +152,8 @@ export default function AddPlace() {
                   fullWidth
                   label={t("coordinates")}
                   style={{ marginBottom: "5px" }}
-                  error={typeof errors['coordinates'] !== "undefined"}
-                  helperText={typeof errors['coordinates'] !== "undefined" ? errors["coordinates"][0]: ""}
+                  error={typeof errors['position'] !== "undefined"}
+                  helperText={typeof errors['position'] !== "undefined" ? errors["position"][0]: ""}
                 />
                 <TextField
                   autoFocus={typeof position !== "undefined"}
