@@ -25,6 +25,7 @@ import { XStorage as xsto } from '../util/XStorage.js'
 import { useTranslation } from "react-i18next";
 import { Place } from "../util/Api/Place";
 import { Finding } from "../util/Api/Finding";
+import { Auth } from "../util/Api/Auth";
 
 import colorGradient from "javascript-color-gradient";
 
@@ -35,7 +36,8 @@ import { Wrapper } from "@googlemaps/react-wrapper";
 
 import { GMap, Marker } from "../components/Maps";
 
-import fuelStation from "../images/pins/fuel-station.png";
+import Zoom from '@material-ui/core/Zoom';
+import SendIcon from '@material-ui/icons/Send';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,6 +53,12 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
   },
+  floatingButton: {
+    position: "absolute",
+    bottom: 0,
+    zIndex: 9000,
+    borderRadius: 0
+  }
 }));
 
 const customIcons = {
@@ -116,7 +124,14 @@ export default function Geo() {
   const [snackbar, setSnackbar] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const [clicks, setClicks] = React.useState([]);
+  // location selection on map
+  const [selection, setSelection] = useState(undefined);
+  const _selectPlace = (lat, lng) => {
+    if (Auth.userInfo.permissions.indexOf("add locations") > -1) {
+      setSelection({lat, lng});
+    }
+  }
+
   const [zoom, setZoom] = React.useState(8); // initial zoom
   const [center, setCenter] = React.useState({
     lat: 7.765676800293702,
@@ -242,11 +257,30 @@ export default function Geo() {
           }}>{t("navigate")}</Button>
         </DialogActions>
       </Dialog>
+      {typeof selection !== "undefined" ?
+      <Zoom
+        in={true}
+        timeout={500}
+        unmountOnExit
+      >
+        <Button
+          disableElevation
+          fullWidth
+          variant="contained"
+          size="large"
+          color="secondary"
+          className={classes.floatingButton}
+          endIcon={<SendIcon />}
+        >
+          {t("add_place")}
+        </Button>
+      </Zoom>: null}
       <Wrapper apiKey={process.env.REACT_APP_GAPI_KEY} render={_mapRender}>
         <GMap
           center={center}
           zoom={zoom}
           style={{ flexGrow: "1", height: "100%" }}
+          onClick={(e) => _selectPlace(e.latLng.lat(), e.latLng.lng())}
         >
           {markersReady && places.map((p, i) =>(
             <Marker
@@ -260,6 +294,7 @@ export default function Geo() {
               position={{ lat: p.location.coordinates[1], lng: p.location.coordinates[0] }}
             />
           ))}
+          {typeof selection != "undefined" && <Marker position={selection} />}
         </GMap>
       </Wrapper>
     </main>
