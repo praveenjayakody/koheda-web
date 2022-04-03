@@ -83,6 +83,9 @@ export default function AddPlace() {
   const classes = useStyles();
 
   const { t, i18n } = useTranslation(['addPlace']);
+  useEffect(() => {
+		i18n.changeLanguage(xsto.load("lang") ?? "en");
+	}, []);
 
   const { itemId, position } = useParams();
 

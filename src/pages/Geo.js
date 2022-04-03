@@ -114,6 +114,9 @@ export default function Geo({ mode }) {
   const classes = useStyles();
 
   const { t, i18n } = useTranslation(['geo']);
+  useEffect(() => {
+		i18n.changeLanguage(xsto.load("lang") ?? "en");
+	}, []);
 
   const { itemId, geoLocation } = useParams();
 
