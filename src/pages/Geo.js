@@ -58,6 +58,16 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     zIndex: 9000,
     borderRadius: 0
+  },
+  floatingLabel: {
+    position: "absolute",
+    top: 70,
+    zIndex: 9000,
+    background: "rgba(0, 0, 0, .8)",
+    padding: 10,
+    color: "#fff",
+    width: "100%",
+    textAlign: "center"
   }
 }));
 
@@ -279,6 +289,7 @@ export default function Geo({ mode }) {
           {t("add_place")}
         </Button>
       </Zoom>: null}
+      {mode === "add" && Auth.userInfo.permissions.indexOf("add locations") > -1 ? <Typography variant="caption" className={classes.floatingLabel}>{t("add_place_banner")}</Typography>: null}
       <Wrapper apiKey={process.env.REACT_APP_GAPI_KEY} render={_mapRender}>
         <GMap
           center={center}
