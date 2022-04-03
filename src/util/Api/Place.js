@@ -24,4 +24,27 @@ export class Place {
             console.error(error);
         }
     }
+
+    static async store (entity) {
+        const userToken = xsto.get("token");
+        try {
+            let response = await fetch(this.serverUrl + 'api/place', {
+                method: 'POST',
+                mode: 'cors',
+                withCredentials: true,
+                credentials: 'include',
+                headers: {
+                    'Authorization': "Bearer " + userToken,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: (new URLSearchParams(entity)).toString()
+            });
+            let responseJson = await response.json();
+
+            return responseJson;
+        } catch (error) {
+            console.error(error);
+        }
+    }
 }
