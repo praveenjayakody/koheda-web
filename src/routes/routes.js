@@ -42,7 +42,8 @@ export default function Routes() {
 				<Route path="/account" component={Account} isPrivate />
 				<Route path="/welcome" component={Welcome} isPrivate />
 				<Route path="/search/:itemId/:geoLocation?" component={Geo} isPrivate />
-				<Route path="/add/:itemId?/:position?" component={AddPlace} isPrivate />
+				<Route path="/add/:itemId/:geoLocation?" isPrivate><Geo mode={"add"} /></Route>
+				<Route path="/create/:itemId?/:position?" component={AddPlace} isPrivate />
 
 				{/* redirect user to SignIn page if route does not exist and user is not authenticated */}
 				<Route component={SignIn} />

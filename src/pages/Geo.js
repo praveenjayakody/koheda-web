@@ -110,7 +110,7 @@ function generateMarker(rating) {
   return svgMarker;
 }
 
-export default function Geo() {
+export default function Geo({ mode }) {
   const classes = useStyles();
 
   const { t, i18n } = useTranslation(['geo']);
@@ -127,7 +127,7 @@ export default function Geo() {
   // location selection on map
   const [selection, setSelection] = useState(undefined);
   const _selectPlace = (lat, lng) => {
-    if (Auth.userInfo.permissions.indexOf("add locations") > -1) {
+    if (mode === "add" && Auth.userInfo.permissions.indexOf("add locations") > -1) {
       setSelection({lat, lng});
     }
   }
@@ -271,7 +271,7 @@ export default function Geo() {
           color="secondary"
           className={classes.floatingButton}
           endIcon={<SendIcon />}
-          onClick={() => window.location.href = process.env.REACT_APP_BASENAME + "/add/" + itemId + "/" + selection.lat + "," + selection.lng}
+          onClick={() => window.location.href = process.env.REACT_APP_BASENAME + "/create/" + itemId + "/" + selection.lat + "," + selection.lng}
         >
           {t("add_place")}
         </Button>

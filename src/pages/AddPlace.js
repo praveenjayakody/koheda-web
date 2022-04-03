@@ -121,7 +121,7 @@ export default function AddPlace() {
           }
         }
 
-        window.location.href = process.env.REACT_APP_BASENAME + "/add/";
+        window.location.href = process.env.REACT_APP_BASENAME + "/create/";
       }
     } catch (e) {
       setSnackbar(t("general:network_error"));
