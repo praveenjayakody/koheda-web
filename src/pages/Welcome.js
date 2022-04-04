@@ -21,6 +21,8 @@ import { Auth } from "../util/Api/Auth";
 
 import { languages } from "../locales/list"
 
+import BigButton from "../components/BigButton"
+
 const itemList = require("../util/Items");
 
 const useStyles = makeStyles((theme) => ({
@@ -128,7 +130,7 @@ export default function Welcome() {
         <Grid container>
           <Grid item container lg={12} xs={12} justifyContent="space-between">
             <Button onClick={_signOut}>Logout</Button>
-            <ButtonGroup variant="text" color="#000" disableElevation>
+            <ButtonGroup variant="text" color="default" disableElevation>
               {
                 languages.map((l, i) => <Button key={i} onClick={() => setLanguage(l.code)}>{l.label}</Button>)
               }
@@ -169,33 +171,20 @@ export default function Welcome() {
                 <p className={classes.whereBranding}>{t("welcome:tagline"+ "_" + mode)}</p>
               </Grow>
             </Grid>
-            <Grid item xs={12}>
-              <Slide
-                in={true}
-                direction="up"
-                {...(true ? { timeout: 1000 } : {})}
-              >
-                <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  defaultValue={"none"}
-                  onChange={(e) => {
-                    let url = mode + "/" + e.target.value;
+            <Grid item container xs={12} spacing={1}>
+              {items.map((o, i) => (
+                <Grid key={i} item xs={12} lg={3}>
+                  <BigButton onClick={() => {
+                    let url = mode + "/" + o;
 
                     if (typeof location !== "undefined") {
                       url += "/" + location.lat + "," + location.lng;
                     }
 
                     window.location.href = url;
-                  }}
-                  className={classes.whereDropdown}
-                  fullWidth
-                  color="secondary"
-                >
-                  {items.map((o, i) => <MenuItem key={i} value={o} style={{fontSize: "60px"}}>{t("general:item." + o)}</MenuItem>)}
-                  <MenuItem value={"none"} style={{fontSize: "60px"}}>{t("welcome:placeholder")}</MenuItem>
-                </Select>
-              </Slide>
+                  }}>{o}</BigButton>
+                </Grid>
+              ))}
             </Grid>
           </Grid>
         </Grid>
