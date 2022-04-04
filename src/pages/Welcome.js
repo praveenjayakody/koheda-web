@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     height: '100vh',
     overflow: 'auto',
-    background: "#4caf50"
+    background: "#fef49e"
   },
   container: {
     paddingTop: theme.spacing(1),
@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "Montserrat",
     fontWeight: 500,
     fontSize: "75px",
-    color: "#fff176"
+    color: "red"
   }
 }));
 
@@ -128,7 +128,7 @@ export default function Welcome() {
         <Grid container>
           <Grid item container lg={12} xs={12} justifyContent="space-between">
             <Button onClick={_signOut}>Logout</Button>
-            <ButtonGroup variant="text" color="secondary" disableElevation>
+            <ButtonGroup variant="text" color="#000" disableElevation>
               {
                 languages.map((l, i) => <Button key={i} onClick={() => setLanguage(l.code)}>{l.label}</Button>)
               }
