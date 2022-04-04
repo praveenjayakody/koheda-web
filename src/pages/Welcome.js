@@ -157,33 +157,32 @@ export default function Welcome() {
             </Grid>
           : null}
           <Grid item>
-            <Grow in={true} style={{ transformOrigin: '0 0 0' }}>
-              <p className={classes.hiMessage}>{t("welcome:hi", {name: Auth.userInfo.name.split(" ")[0]})}</p>
-            </Grow>
+            <p className={classes.hiMessage}>{t("welcome:hi", {name: Auth.userInfo.name.split(" ")[0]})}</p>
           </Grid>
           <Grid container item>
             <Grid item style={{marginRight: 20}}>
-              <Grow
-                in={true}
-                style={{ transformOrigin: '0 0 0' }}
-                {...(true ? { timeout: 1000 } : {})}
-              >
-                <p className={classes.whereBranding}>{t("welcome:tagline"+ "_" + mode)}</p>
-              </Grow>
+              <p className={classes.whereBranding}>{t("welcome:tagline"+ "_" + mode)}</p>
             </Grid>
             <Grid item container xs={12} spacing={1}>
               {items.map((o, i) => (
-                <Grid key={i} item xs={12} lg={3}>
-                  <BigButton onClick={() => {
-                    let url = mode + "/" + o;
+                <Grow
+                  key={i}
+                  in={true}
+                  style={{ transformOrigin: '0 0 0' }}
+                  timeout={1000 * i * 0.5}
+                >
+                  <Grid item xs={12} lg={3}>
+                    <BigButton onClick={() => {
+                      let url = mode + "/" + o;
 
-                    if (typeof location !== "undefined") {
-                      url += "/" + location.lat + "," + location.lng;
-                    }
+                      if (typeof location !== "undefined") {
+                        url += "/" + location.lat + "," + location.lng;
+                      }
 
-                    window.location.href = url;
-                  }}>{o}</BigButton>
-                </Grid>
+                      window.location.href = url;
+                    }}>{o}</BigButton>
+                  </Grid>
+                </Grow>
               ))}
             </Grid>
           </Grid>
