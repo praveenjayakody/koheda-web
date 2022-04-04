@@ -130,6 +130,9 @@ export default function SignIn() {
 					<Grid item container justifyContent="center">
 						<Typography variant="caption">{}</Typography>
 					</Grid>
+					<Grid item>
+						<Typography variant="caption" color="textPrimary">v{process.env.REACT_APP_VERSION}</Typography>
+					</Grid>
 				</Grid>
 			</Grid>
 		</Grid>
