@@ -39,6 +39,8 @@ import { GMap, Marker } from "../components/Maps";
 import Zoom from '@material-ui/core/Zoom';
 import SendIcon from '@material-ui/icons/Send';
 
+import myLocationIcon from "../images/my-location.png"
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -297,6 +299,15 @@ export default function Geo({ mode }) {
           style={{ flexGrow: "1", height: "100%" }}
           onClick={(e) => _selectPlace(e.latLng.lat(), e.latLng.lng())}
         >
+          {typeof geoLocation !== "undefined" ?
+            <Marker
+              optimized={true}
+              title={t("your_location")}
+              icon={myLocationIcon}
+              position={{ lat: parseFloat(geoLocation.split(",")[0]), lng: parseFloat(geoLocation.split(",")[1]) }}
+            />
+          : null}
+
           {markersReady && places.map((p, i) =>(
             <Marker
               key={i}
