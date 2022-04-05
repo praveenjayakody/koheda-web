@@ -253,7 +253,7 @@ export default function Geo({ mode }) {
           <DialogContentText style={{textAlign: "center"}}>
             {
               typeof selectedPlace.updated_at != "undefined" ?
-              t("last_updated", { date: (new Date(selectedPlace.updated_at)).toLocaleString() })
+              t("last_updated", { date: (new Date(selectedPlace.facilities.find(e => e.facility == itemId).updated_at)).toLocaleString() })
               : ""
             }
           </DialogContentText>
