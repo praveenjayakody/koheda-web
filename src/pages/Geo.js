@@ -101,16 +101,31 @@ function IconContainer(props) {
   return <span {...other}>{customIcons[value].icon}</span>;
 }
 
-function generateMarker(rating) {
+function getRatingFromTime (updated_at) {
+  /**
+   * Provided the updated_at time (UTC string), a value between 0.33 and 0.95 is provided
+   */
+
+   const updatedAt = new Date(updated_at);
+   const dayDifference = ((new Date()) - updatedAt)/(1000*60*60*24); // number of days elapsed betwen last updated time and now
+   const opacity = (20*Math.exp(-1 * dayDifference) + 10)/31.5; // o = (10 + 20e^-t)/31.5
+
+   return opacity;
+}
+
+function generateMarker(rating, updated_at) {
   // to edit SVG paths, use https://yqnn.github.io/svg-path-editor/
   const badColor = { red: 255, green: 0, blue: 0 };
   const goodColor = { red: 0, green: 255, blue: 0 };
+
 
   const svgMarker = {
     path: "M 10.453 14.016 q 2.906 0 4.945 2.039 t 2.039 4.945 q 0 1.453 -0.727 3.328 t -1.758 3.516 t -2.039 3.07 t -1.711 2.273 l -0.75 0.797 q -0.281 -0.328 -0.75 -0.867 t -1.688 -2.156 t -2.133 -3.141 t -1.664 -3.445 t -0.75 -3.375 q 0 -2.906 2.039 -4.945 t 4.945 -2.039 z",
     fillColor: colorGradient.setGradient("#FF0000", "ffa500", "00ff00").setMidpoint(10).getColor(rating == 0 ? 1: rating),
     fillOpacity: 0.95,
     strokeWeight: 3,
+    strokeOpacity: getRatingFromTime(updated_at),
+    // strokeColor: colorGradient.setGradient("#ff0000", "#00ff00").setMidpoint(10).getColor(opacity * 10),
     rotation: 0,
     scale: 2
   };
@@ -171,9 +186,12 @@ export default function Geo({ mode }) {
   useEffect(() => {( async () => {
     setPlaces(await Place.list({ facility: itemId }));
   })()}, []);
-  useEffect(() => {
-    console.log(places);
-  }, [places]);
+  // useEffect(() => {
+  //   for (var i =0; i < places.length; i++) {
+  //     places[i].opacity = getRatingFromTime(places[i].facilities.find(e => e.facility == itemId).updated_at)
+  //   }
+  //   console.log(places);
+  // }, [places]);
 
   // set location and zoom on it if present
   useEffect(() => {
@@ -316,7 +334,7 @@ export default function Geo({ mode }) {
                 setSelectedMarker(p);
               }}
               title={p.name}
-              icon={generateMarker(p.facilities.find(e => e.facility == itemId).quality)}
+              icon={generateMarker(p.facilities.find(e => e.facility == itemId).quality, p.facilities.find(e => e.facility == itemId).updated_at)}
               position={{ lat: p.location.coordinates[1], lng: p.location.coordinates[0] }}
             />
           ))}
