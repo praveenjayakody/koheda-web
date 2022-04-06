@@ -18,7 +18,7 @@ import SentimentDissatisfiedIcon from '@material-ui/icons/SentimentDissatisfied'
 import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied';
 import SentimentSatisfiedAltIcon from '@material-ui/icons/SentimentSatisfiedAltOutlined';
 import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
-import { DialogActions, DialogContent, DialogContentText, Typography } from "@material-ui/core";
+import { DialogActions, DialogContent, DialogContentText, Select, MenuItem, Typography } from "@material-ui/core";
 
 import { XStorage as xsto } from '../util/XStorage.js'
 
@@ -217,6 +217,9 @@ export default function Geo({ mode }) {
   // marker selection
   const [selectedPlace, setSelectedMarker] = useState({});
 
+  // selected facility - controls which facility is shown on the dialog box
+  const [facilityId, setFacilityId] = useState(itemId);
+
   // rate place (and facility)
   const _doRate = async (e) => {
     if (xsto.load("ratingSubmitted") !== null || window.confirm(t("submit_rating"))) {
@@ -226,7 +229,7 @@ export default function Geo({ mode }) {
       try {
         let resp = await Finding.store({
           place_id: selectedPlace.id,
-          facility: itemId,
+          facility: facilityId,
           rating: e.target.value
         });
         if (typeof resp.errors === 'undefined') {
@@ -258,11 +261,21 @@ export default function Geo({ mode }) {
             }
           </DialogContentText>
           <Grid container alignItems="center" direction="column">
+            <Grid item style={{ marginBottom: 10 }}>
+              <Select
+                value={facilityId}
+                onChange={(e) => setFacilityId(e.target.value)}
+              >
+                {typeof selectedPlace.facilities !== "undefined" ? selectedPlace.facilities.map((f, i) => (
+                  <MenuItem key={i} value={f.facility}>{t("general:item." + f.facility)}</MenuItem>
+                )): null}
+              </Select>
+            </Grid>
             <Grid item>
               <Rating 
                 value={(() => {
                   let rating = typeof selectedPlace.facilities !== "undefined" ?
-                  selectedPlace.facilities.find(e => e.facility == itemId).quality/2
+                  selectedPlace.facilities.find(e => e.facility == facilityId).quality/2
                   :0;
                   if (rating == 0) rating = 1;
                   return rating;
@@ -331,6 +344,7 @@ export default function Geo({ mode }) {
               key={i}
               optimized={false}
               onClick={(e) => {
+                setFacilityId(itemId);
                 setSelectedMarker(p);
               }}
               title={p.name}
