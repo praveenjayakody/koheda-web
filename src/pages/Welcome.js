@@ -143,17 +143,10 @@ export default function Welcome() {
 
           {Auth.userInfo.permissions.indexOf("add locations") > -1 ?
             <Grid item container justifyContent="center">
-              <Select
-                value={mode}
-                onChange={(e) => {
-                  setMode(e.target.value);
-                }}
-                color="secondary"
-                style={{marginTop: 10}}
-              >
-                <MenuItem value={"add"}>{t("welcome:add_locations")}</MenuItem>
-                <MenuItem value={"search"}>{t("welcome:search_locations")}</MenuItem>
-              </Select>
+              <ButtonGroup variant="outlined" color="default" disableElevation>
+                <Button onClick={() => setMode("search")}>{t("welcome:search_locations")}</Button>
+                <Button onClick={() => setMode("add")}>{t("welcome:add_locations")}</Button>
+              </ButtonGroup>
             </Grid>
           : null}
           <Grid item>
