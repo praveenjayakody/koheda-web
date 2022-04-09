@@ -4,5 +4,12 @@
     "tagline_add": "මම දන්නවා කොහෙන් හොයන්නද කියලා",
     "placeholder": "අත්‍යවශ්‍ය දෑ",
     "add_locations": "ස්ථාන එකතු කරන්න",
-    "search_locations": "ස්ථාන සොයන්න"
+    "search_locations": "ස්ථාන සොයන්න",
+
+    "location_errors": {
+        "denied": "උපාංග ඛණ්ඩාංක භාවිතා නොකෙරේ",
+        "unavailable": "Location information is unavailable",
+        "timeout": "කරුණාකර පරිශීලක ස්ථාන අවසරය පිළිගන්න",
+        "unknown": "Unknown error occurred during geolocation"
+    }
 }
