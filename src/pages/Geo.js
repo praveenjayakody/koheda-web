@@ -210,7 +210,11 @@ export default function Geo({ mode }) {
     }
     if (typeof thisLocation !== "undefined") {
       setCenter(thisLocation);
-      setZoom(12);
+      if (typeof geoLocation !== "undefined" && geoLocation !== "") {
+        setZoom(16);
+      } else {
+        setZoom(12);
+      }
     }
   }, [places]);
 
