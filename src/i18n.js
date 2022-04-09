@@ -27,6 +27,10 @@ i18n
                 title: require('./locales/si/title.json'),
                 geo: require('./locales/si/geo.json'),
                 addPlace: require('./locales/si/add_place.json'),
+            },
+            ta: {
+                welcome: require('./locales/ta/welcome.json'),
+                general: require('./locales/ta/general.json')
             }
         },
         lng: 'en',
