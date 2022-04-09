@@ -18,7 +18,7 @@ import SentimentDissatisfiedIcon from '@material-ui/icons/SentimentDissatisfied'
 import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied';
 import SentimentSatisfiedAltIcon from '@material-ui/icons/SentimentSatisfiedAltOutlined';
 import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
-import { DialogActions, DialogContent, DialogContentText, Select, MenuItem, Typography } from "@material-ui/core";
+import { DialogActions, DialogContent, DialogContentText, Select, MenuItem, Typography, Fade } from "@material-ui/core";
 
 import { XStorage as xsto } from '../util/XStorage.js'
 
@@ -322,7 +322,11 @@ export default function Geo({ mode }) {
           {t("add_place")}
         </Button>
       </Zoom>: null}
-      {mode === "add" && Auth.userInfo.permissions.indexOf("add locations") > -1 ? <Typography variant="caption" className={classes.floatingLabel}>{t("add_place_banner")}</Typography>: null}
+      {mode === "add" && Auth.userInfo.permissions.indexOf("add locations") > -1 ? 
+        <Fade in={loading} timeout={{ enter: 0, exit: 6000 }} style={{ transitionDelay: '1000ms' }}>
+          <Typography variant="caption" className={classes.floatingLabel}>{t("add_place_banner")}</Typography>
+        </Fade>
+      : null}
       <Wrapper apiKey={process.env.REACT_APP_GAPI_KEY} render={_mapRender}>
         <GMap
           center={center}
