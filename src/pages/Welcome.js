@@ -108,14 +108,14 @@ export default function Welcome() {
       <Container maxWidth="lg" className={classes.container}>
         <Grid container direction="column">
 
-          {Auth.userInfo.permissions.indexOf("add locations") > -1 ?
+          {/* {Auth.userInfo.permissions.indexOf("add locations") > -1 ?
             <Grid item container justifyContent="center">
               <ButtonGroup variant="outlined" color="default" disableElevation>
                 <Button onClick={() => setMode("search")}>{t("welcome:search_locations")}</Button>
                 <Button onClick={() => setMode("add")}>{t("welcome:add_locations")}</Button>
               </ButtonGroup>
             </Grid>
-          : null}
+          : null} */}
           <Grid item>
             <p className={classes.hiMessage}>{t("welcome:hi", {name: Auth.userInfo.name.split(" ")[0]})}</p>
           </Grid>
