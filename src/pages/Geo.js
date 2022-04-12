@@ -145,7 +145,7 @@ export default function Geo({ mode }) {
 		i18n.changeLanguage(xsto.load("lang") ?? "en");
 	}, []);
 
-  const { itemId, geoLocation } = useParams();
+  const { itemId } = useParams();
 
   const _mapRender = (status) => {
     return <h1>{status}</h1>;
@@ -193,30 +193,62 @@ export default function Geo({ mode }) {
   //   console.log(places);
   // }, [places]);
 
+  // get geolocation
+  const [location, setLocation] = useState(undefined);
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        p => {
+          let geoObject = {};
+          geoObject = {
+            lat: p.coords.latitude,
+            lng: p.coords.longitude
+          };
+          setLocation(geoObject);
+          setCenter(geoObject);
+          setZoom(16);
+        },
+        error => {
+          switch(error.code) {
+            case error.PERMISSION_DENIED:
+              setSnackbar(t("welcome:location_errors.denied"));
+              break;
+            case error.POSITION_UNAVAILABLE:
+              setSnackbar(t("welcome:location_errors.unavailable"));
+              break;
+            case error.TIMEOUT:
+              setSnackbar(t("welcome:location_errors.timeout"));
+              break;
+            case error.UNKNOWN_ERROR:
+              setSnackbar(t("welcome:location_errors.unknown"));
+              break;
+          }
+        }
+      );
+    }
+  }, []);
   // set location and zoom on it if present
+  const [isZoomed, setIsZoomed] = useState(false); // zoom in only once; don't change the zoom on consequent location updates
   useEffect(() => {
     let thisLocation = undefined;
-    if (typeof geoLocation !== "undefined" && geoLocation !== "") {
-      thisLocation = geoLocation.split(",");
-      thisLocation = {
-        lat: parseFloat(thisLocation[0]),
-        lng: parseFloat(thisLocation[1])
-      }
+    if (typeof location !== "undefined" && location !== "") {
+      thisLocation = location;
     } else if (places.length > 0) {
       thisLocation = {
         lat: parseFloat(places[0].location.coordinates[1]),
         lng: parseFloat(places[0].location.coordinates[0])
       }
     }
-    if (typeof thisLocation !== "undefined") {
+    if (typeof thisLocation !== "undefined" && !isZoomed) {
       setCenter(thisLocation);
-      if (typeof geoLocation !== "undefined" && geoLocation !== "") {
+      if (typeof location !== "undefined" && location !== "") {
         setZoom(16);
       } else {
         setZoom(12);
       }
+      setIsZoomed(true);
     }
-  }, [places]);
+  }, [places, location]);
 
   // marker selection
   const [selectedPlace, setSelectedMarker] = useState({});
@@ -338,12 +370,12 @@ export default function Geo({ mode }) {
           style={{ flexGrow: "1", height: "100%" }}
           onClick={(e) => _selectPlace(e.latLng.lat(), e.latLng.lng())}
         >
-          {typeof geoLocation !== "undefined" ?
+          {typeof location !== "undefined" ?
             <Marker
               optimized={true}
               title={t("your_location")}
               icon={myLocationIcon}
-              position={{ lat: parseFloat(geoLocation.split(",")[0]), lng: parseFloat(geoLocation.split(",")[1]) }}
+              position={location}
             />
           : null}
 

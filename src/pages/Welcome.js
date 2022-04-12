@@ -77,39 +77,6 @@ export default function Welcome() {
 
   const [snackbar, setSnackbar] = useState(null);
 
-  // get geolocation
-  const [location, setLocation] = useState(undefined);
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        p => {
-          let geoObject = {};
-          geoObject = {
-            lat: p.coords.latitude,
-            lng: p.coords.longitude
-          };
-          setLocation(geoObject);
-        },
-        error => {
-          switch(error.code) {
-            case error.PERMISSION_DENIED:
-              setSnackbar(t("welcome:location_errors.denied"));
-              break;
-            case error.POSITION_UNAVAILABLE:
-              setSnackbar(t("welcome:location_errors.unavailable"));
-              break;
-            case error.TIMEOUT:
-              setSnackbar(t("welcome:location_errors.timeout"));
-              break;
-            case error.UNKNOWN_ERROR:
-              setSnackbar(t("welcome:location_errors.unknown"));
-              break;
-          }
-        }
-      );
-    }
-  }, []);
-
   const [mode, setMode] = useState("search");
 
   const [items, setItems] = useState(itemList);
@@ -141,14 +108,14 @@ export default function Welcome() {
       <Container maxWidth="lg" className={classes.container}>
         <Grid container direction="column">
 
-          {Auth.userInfo.permissions.indexOf("add locations") > -1 ?
+          {/* {Auth.userInfo.permissions.indexOf("add locations") > -1 ?
             <Grid item container justifyContent="center">
               <ButtonGroup variant="outlined" color="default" disableElevation>
                 <Button onClick={() => setMode("search")}>{t("welcome:search_locations")}</Button>
                 <Button onClick={() => setMode("add")}>{t("welcome:add_locations")}</Button>
               </ButtonGroup>
             </Grid>
-          : null}
+          : null} */}
           <Grid item>
             <p className={classes.hiMessage}>{t("welcome:hi", {name: Auth.userInfo.name.split(" ")[0]})}</p>
           </Grid>
@@ -167,10 +134,6 @@ export default function Welcome() {
                   <Grid item xs={12} lg={3}>
                     <BigButton onClick={() => {
                       let url = mode + "/" + o;
-
-                      if (typeof location !== "undefined") {
-                        url += "/" + location.lat + "," + location.lng;
-                      }
 
                       window.location.href = url;
                     }}>{o}</BigButton>
