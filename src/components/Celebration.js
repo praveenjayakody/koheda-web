@@ -12,7 +12,6 @@ import Grid from '@material-ui/core/Grid';
 
 import { useTranslation } from "react-i18next";
 
-import confetti from "../images/confetti.gif"
 import { Backdrop, Button, Paper, Slide } from "@material-ui/core";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import './Celebration.css';
