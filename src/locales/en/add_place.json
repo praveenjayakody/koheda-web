@@ -4,6 +4,9 @@
     "coordinates": "Coordinates",
     "facilities": "Facility Ratings",
 
+    "thank_you": "Thank you for the new addition! 🎉",
+    "processing_msg": "The new place will be added to the map after processing",
+
     "errors": {
         "atleastOneFacility": "At least one facility should be present!"
     }

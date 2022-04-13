@@ -26,6 +26,7 @@ import { useTranslation } from "react-i18next";
 import { Place } from "../util/Api/Place";
 import { Finding } from "../util/Api/Finding";
 import { Auth } from "../util/Api/Auth";
+import Celebration from "../components/Celebration.js";
 
 import colorGradient from "javascript-color-gradient";
 import moment from "moment";
@@ -278,6 +279,7 @@ export default function Geo({ mode }) {
   const [facilityId, setFacilityId] = useState(itemId);
 
   // rate place (and facility)
+  const [celebration, setCelebration] = useState(false);
   const _doRate = async (e) => {
     if (xsto.load("ratingSubmitted") !== null || window.confirm(t("submit_rating"))) {
       xsto.set("ratingSubmitted", true);
@@ -290,6 +292,8 @@ export default function Geo({ mode }) {
           rating: e.target.value
         });
         if (typeof resp.errors === 'undefined') {
+          setCelebration(true);
+          setTimeout(() => setCelebration(false), 5000);
           setSnackbar(t("rating_appreciated"));
         } else {
           setSnackbar(t("general:validation_error"));
@@ -307,6 +311,7 @@ export default function Geo({ mode }) {
     <main className={classes.content}>
       {loading ? <LinearProgress color="secondary" style={{ position: "absolute", width: "100%", zIndex: 9000 }} />: null}
       <Snackbar open={snackbar !== null} autoHideDuration={6000} onClose={() => setSnackbar(null)} message={snackbar} />
+      <Celebration open={celebration} onClose={() => setCelebration(false)} hideButton={true} invisible={true} />
       <Dialog onClose={() => setSelectedMarker({})} open={typeof selectedPlace.id !== "undefined"}>
         <DialogTitle>{selectedPlace.name}</DialogTitle>
         <DialogContent>

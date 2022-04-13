@@ -34,6 +34,7 @@ import RemoveIcon from '@material-ui/icons/Clear';
 
 import { Place } from "../util/Api/Place";
 import { Finding } from "../util/Api/Finding";
+import Celebration from "../components/Celebration.js";
 
 const itemList = require("../util/Items");
 
@@ -99,6 +100,8 @@ export default function AddPlace() {
     return ox;
   })());
 
+
+  const [celebration, setCelebration] = useState(false);
   const _addPlace = async (e) => {
     e.preventDefault();
     setErrors([]);
@@ -125,10 +128,12 @@ export default function AddPlace() {
         }
 
         // window.location.href = process.env.REACT_APP_BASENAME + "/create/";
-        window.history.back();
+        // window.history.back();
+        setCelebration(true);
       }
     } catch (e) {
       setSnackbar(t("general:network_error"));
+      setTimeout(() => window.history.back(), 1000);
       console.log(e);
     }
 
@@ -140,6 +145,7 @@ export default function AddPlace() {
     <main className={classes.content}>
       {loading ? <LinearProgress color="secondary" style={{ position: "absolute", width: "80%" }} />: null}
       <Snackbar open={snackbar !== null} autoHideDuration={6000} onClose={() => setSnackbar(null)} message={snackbar} />
+      <Celebration open={celebration} mainText={t("thank_you")} subText={t("processing_msg")} onClose={() => window.history.back()} />
       <Container maxWidth="lg" className={classes.container}>
         <Grid container direction="column">
           <Grid item>
