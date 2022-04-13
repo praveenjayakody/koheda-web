@@ -28,6 +28,9 @@ import { Finding } from "../util/Api/Finding";
 import { Auth } from "../util/Api/Auth";
 
 import colorGradient from "javascript-color-gradient";
+import moment from "moment";
+import 'moment/locale/si'
+import 'moment/locale/ta'
 
 import {
   useParams
@@ -143,6 +146,7 @@ export default function Geo({ mode }) {
   const { t, i18n } = useTranslation(['geo']);
   useEffect(() => {
 		i18n.changeLanguage(xsto.load("lang") ?? "en");
+    moment.locale(xsto.load("lang") ?? "en");
 	}, []);
 
   const { itemId } = useParams();
@@ -160,6 +164,23 @@ export default function Geo({ mode }) {
     if (mode === "add" && Auth.userInfo.permissions.indexOf("add locations") > -1) {
       setSelection({lat, lng});
     }
+  }
+  const _getLastUpdated = (dateString) => {
+    const criticalThreshold = 24*60*60; // if a date is older than this many seconds, the time is colored red
+    const thisMoment = moment(dateString);
+    let ret = {};
+    
+    ret.ago = thisMoment.fromNow();
+    ret.timeString = t("last_updated", {
+      date: thisMoment.format(t("date_format"))
+    })
+    ret.diff = thisMoment.diff(new Date())/1000;
+    console.log(ret.diff);
+
+    return <Grid container justifyContent="center" direction="column">
+      <Grid item>{ret.timeString}</Grid>
+      <Grid item><Typography variant="subtitle1" style={{ fontWeight: 800, color: ret.diff < -criticalThreshold ? "red": "black" }}>({ret.ago})</Typography></Grid>
+    </Grid>;
   }
 
   const [zoom, setZoom] = React.useState(8); // initial zoom
@@ -289,13 +310,13 @@ export default function Geo({ mode }) {
       <Dialog onClose={() => setSelectedMarker({})} open={typeof selectedPlace.id !== "undefined"}>
         <DialogTitle>{selectedPlace.name}</DialogTitle>
         <DialogContent>
-          <DialogContentText style={{textAlign: "center"}}>
+          <div style={{textAlign: "center"}}>
             {
               typeof selectedPlace.updated_at != "undefined" ?
-              t("last_updated", { date: (new Date(selectedPlace.facilities.find(e => e.facility == facilityId).updated_at)).toLocaleString() })
+              _getLastUpdated(selectedPlace.facilities.find(e => e.facility == facilityId).updated_at)
               : ""
             }
-          </DialogContentText>
+          </div>
           <Grid container alignItems="center" direction="column">
             <Grid item style={{ marginBottom: 10 }}>
               <Select
