@@ -5,6 +5,7 @@
     "name": "Name",
     "mobile": "Mobile number",
     "done": "Done",
+    "legend": "Legend",
 
     "item": {
         "petrol-92": "Petrol 92",

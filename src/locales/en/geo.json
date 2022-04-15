@@ -8,5 +8,10 @@
   "add_place": "Add Place",
   "add_place_banner": "Zoom in on a location and click to add a new place",
   "your_location": "Your Location",
-  "date_format": "DD MMM YY hh:mm A"
+  "date_format": "DD MMM YY hh:mm A",
+
+  "legend": {
+    "rating": "Redder the marker is, more crowded the place. Green means less crowded",
+    "faded": "A solid outline means the place was updated recently. Faded outline means outdated"
+  }
 }

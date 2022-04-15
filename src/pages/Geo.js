@@ -44,6 +44,7 @@ import Zoom from '@material-ui/core/Zoom';
 import SendIcon from '@material-ui/icons/Send';
 
 import myLocationIcon from "../images/my-location.png"
+import Legend from "../components/Legend.js";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -312,6 +313,7 @@ export default function Geo({ mode }) {
       {loading ? <LinearProgress color="secondary" style={{ position: "absolute", width: "100%", zIndex: 9000 }} />: null}
       <Snackbar open={snackbar !== null} autoHideDuration={6000} onClose={() => setSnackbar(null)} message={snackbar} />
       <Celebration open={celebration} onClose={() => setCelebration(false)} hideButton={true} invisible={true} />
+      <Legend />
       <Dialog onClose={() => setSelectedMarker({})} open={typeof selectedPlace.id !== "undefined"}>
         <DialogTitle>{selectedPlace.name}</DialogTitle>
         <DialogContent>
@@ -393,6 +395,7 @@ export default function Geo({ mode }) {
         <GMap
           center={center}
           zoom={zoom}
+          fullscreenControl={false}
           style={{ flexGrow: "1", height: "100%" }}
           onClick={(e) => _selectPlace(e.latLng.lat(), e.latLng.lng())}
         >
