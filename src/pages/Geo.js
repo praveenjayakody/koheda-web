@@ -313,7 +313,13 @@ export default function Geo({ mode }) {
       {loading ? <LinearProgress color="secondary" style={{ position: "absolute", width: "100%", zIndex: 9000 }} />: null}
       <Snackbar open={snackbar !== null} autoHideDuration={6000} onClose={() => setSnackbar(null)} message={snackbar} />
       <Celebration open={celebration} onClose={() => setCelebration(false)} hideButton={true} invisible={true} />
-      <Legend />
+      <Legend defaultOpen={(() => {
+        const ret = xsto.load("legendOpened") === null;
+
+        xsto.set("legendOpened", true);
+
+        return ret;
+      })()} />
       <Dialog onClose={() => setSelectedMarker({})} open={typeof selectedPlace.id !== "undefined"}>
         <DialogTitle>{selectedPlace.name}</DialogTitle>
         <DialogContent>

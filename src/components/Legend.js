@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -34,11 +34,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Legend({ children, onClick }) {
+export default function Legend({ defaultOpen }) {
     const classes = useStyles();
     const { t, i18n } = useTranslation(['genral', 'geo']);
 
     const [anchorEl, setAnchorEl] = useState(null);
+    const buttonRef = useRef(null);
+    useEffect(() => {
+        if (defaultOpen && buttonRef != null) {
+            setAnchorEl(buttonRef.current);
+        }
+    }, [defaultOpen, buttonRef]);
 
     const legendItems = [
         {
@@ -94,7 +100,7 @@ export default function Legend({ children, onClick }) {
             </Grid>
         </Popover>
 
-        <Fab variant="extended" color="secondary" className={classes.fab} aria-describedby={"popLegend"} onClick={(e) => setAnchorEl(anchorEl === null ? e.currentTarget: null)}>
+        <Fab ref={buttonRef} variant="extended" color="secondary" className={classes.fab} aria-describedby={"popLegend"} onClick={(e) => setAnchorEl(anchorEl === null ? e.currentTarget: null)}>
             <MapIcon className={classes.extendedIcon} />
             {t("general:legend")}
         </Fab>
