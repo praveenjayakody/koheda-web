@@ -11,7 +11,9 @@
   "date_format": "DD MMM YY hh:mm A",
 
   "legend": {
-    "rating": "Redder the marker is, more crowded the place. Green means less crowded",
-    "faded": "A solid outline means the place was updated recently. Faded outline means outdated"
+    "rating": "Redder the marker is, lower the chance to get the essential. Green means easily obtainable",
+    "faded": "A solid outline means the place was updated recently. Faded outline means outdated",
+    "click": "Press on a marker to view more details about the place",
+    "add": "Press anywhere on the map to add a new place"
   }
 }

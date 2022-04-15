@@ -13,6 +13,8 @@ import MapIcon from '@material-ui/icons/Map';
 
 import ratingThumbnail from "../images/legend/1.png"
 import fadedThumbnail from "../images/legend/2.png"
+import clickThumbnail from "../images/legend/3.png"
+import addThumbnail from "../images/legend/4.png"
 
 const useStyles = makeStyles((theme) => ({
     fab: {
@@ -46,6 +48,14 @@ export default function Legend({ children, onClick }) {
         {
             image: fadedThumbnail,
             text: t("geo:legend:faded")
+        },
+        {
+            image: clickThumbnail,
+            text: t("geo:legend:click")
+        },
+        {
+            image: addThumbnail,
+            text: t("geo:legend:add")
         }
     ]
 
@@ -86,7 +96,7 @@ export default function Legend({ children, onClick }) {
 
         <Fab variant="extended" color="secondary" className={classes.fab} aria-describedby={"popLegend"} onClick={(e) => setAnchorEl(anchorEl === null ? e.currentTarget: null)}>
             <MapIcon className={classes.extendedIcon} />
-            {t("legend")}
+            {t("general:legend")}
         </Fab>
     </>)
 }
