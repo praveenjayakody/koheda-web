@@ -23,6 +23,10 @@ import { languages } from "../locales/list"
 
 import BigButton from "../components/BigButton"
 
+import {
+  useHistory
+} from "react-router-dom";
+
 const itemList = require("../util/Items");
 
 const useStyles = makeStyles((theme) => ({
@@ -89,6 +93,8 @@ export default function Welcome() {
     window.location.reload();
   }
 
+  const browserHistory = useHistory();
+
   return (<div className={classes.root}>
 		<CssBaseline />
     <main className={classes.content}>
@@ -135,7 +141,7 @@ export default function Welcome() {
                     <BigButton onClick={() => {
                       let url = mode + "/" + o;
 
-                      window.location.href = url;
+                      browserHistory.push(url);
                     }}>{o}</BigButton>
                   </Grid>
                 </Grow>

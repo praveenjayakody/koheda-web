@@ -12,6 +12,9 @@ import Navigation from "../components/Navigation";
 import { GoogleLogin } from 'react-google-login';
 
 import { useTranslation, Trans } from "react-i18next";
+import {
+	useHistory
+} from "react-router-dom";
 
 import { languages } from "../locales/list"
 import "./SignIn.css"
@@ -46,6 +49,8 @@ export default function SignIn() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
+	const browserHistory = useHistory();
+
 	const { t, i18n } = useTranslation(['home']);
 	const [language, setLanguage] = useState('en');
 	useEffect(() => {
@@ -65,7 +70,7 @@ export default function SignIn() {
 				alert("Invalid user details");
 			} else {
 				xsto.set("token", result.token);
-				window.location.href="";
+				browserHistory.replace("");
 			}
 		}).catch(e => {
 			console.log(e);
@@ -80,7 +85,7 @@ export default function SignIn() {
 				alert("Invalid user details");
 			} else {
 				xsto.set("token", result.token);
-				window.location.href="";
+				browserHistory.replace("");
 			}
 		});
 	};

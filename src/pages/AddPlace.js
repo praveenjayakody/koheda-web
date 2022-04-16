@@ -24,7 +24,8 @@ import Slider from '@material-ui/core/Slider';
 
 import { XStorage as xsto } from '../util/XStorage.js'
 import {
-  useParams
+  useParams,
+  useHistory
 } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Xui as $x } from "../util/Xui"
@@ -35,6 +36,7 @@ import RemoveIcon from '@material-ui/icons/Clear';
 import { Place } from "../util/Api/Place";
 import { Finding } from "../util/Api/Finding";
 import Celebration from "../components/Celebration.js";
+import { useLocation } from "react-router-dom";
 
 const itemList = require("../util/Items");
 
@@ -89,6 +91,8 @@ export default function AddPlace() {
 	}, []);
 
   const { itemId, position } = useParams();
+  const browserHistory = useHistory();
+  const location = useLocation();
 
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -145,7 +149,9 @@ export default function AddPlace() {
     <main className={classes.content}>
       {loading ? <LinearProgress color="secondary" style={{ position: "absolute", width: "80%" }} />: null}
       <Snackbar open={snackbar !== null} autoHideDuration={6000} onClose={() => setSnackbar(null)} message={snackbar} />
-      <Celebration open={celebration} mainText={t("thank_you")} subText={t("processing_msg")} onClose={() => window.history.back()} />
+      <Celebration open={celebration} mainText={t("thank_you")} subText={t("processing_msg")} onClose={() => {
+        browserHistory.replace("/search/" + itemId);
+      }} />
       <Container maxWidth="lg" className={classes.container}>
         <Grid container direction="column">
           <Grid item>
