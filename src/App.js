@@ -14,9 +14,9 @@ import './App.css';
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Router history={history}>
+      {/* <Router history={history}> */}
         <Routes />
-      </Router>
+      {/* </Router> */}
     </ThemeProvider>
   );
 }
