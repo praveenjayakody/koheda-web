@@ -289,7 +289,7 @@ export default function Geo({ mode = "add" }) {
         let resp = await Finding.store({
           place_id: selectedPlace.id,
           facility: facilityId,
-          rating: newRating
+          rating: newRating*2
         });
         if (typeof resp.errors === 'undefined') {
           const placeIndex = places.findIndex((p) => p.id === selectedPlace.id);
