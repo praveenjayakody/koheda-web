@@ -280,6 +280,7 @@ export default function Geo({ mode = "add" }) {
   // rate place (and facility)
   const [celebration, setCelebration] = useState(false);
   const _doRate = async (e) => {
+    const newRating = parseInt(e.target.value);
     if (xsto.load("ratingSubmitted") !== null || window.confirm(t("submit_rating"))) {
       xsto.set("ratingSubmitted", true);
 
@@ -288,9 +289,17 @@ export default function Geo({ mode = "add" }) {
         let resp = await Finding.store({
           place_id: selectedPlace.id,
           facility: facilityId,
-          rating: e.target.value
+          rating: newRating
         });
         if (typeof resp.errors === 'undefined') {
+          const placeIndex = places.findIndex((p) => p.id === selectedPlace.id);
+          const facilityIndex = places[placeIndex].facilities.findIndex((f) => f.facility === facilityId);
+
+          places[placeIndex].facilities[facilityIndex].quality = newRating*2;
+          places[placeIndex].facilities[facilityIndex].updated_at = (new Date()).toISOString();
+
+          setPlaces(places);
+
           setCelebration(true);
           setTimeout(() => setCelebration(false), 5000);
           setSnackbar(t("rating_appreciated"));
