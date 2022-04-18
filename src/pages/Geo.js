@@ -230,8 +230,6 @@ export default function Geo({ mode = "add" }) {
             lng: p.coords.longitude
           };
           setLocation(geoObject);
-          setCenter(geoObject);
-          setZoom(16);
         },
         error => {
           switch(error.code) {
@@ -253,7 +251,6 @@ export default function Geo({ mode = "add" }) {
     }
   }, []);
   // set location and zoom on it if present
-  const [isZoomed, setIsZoomed] = useState(false); // zoom in only once; don't change the zoom on consequent location updates
   useEffect(() => {
     let thisLocation = undefined;
     if (typeof location !== "undefined" && location !== "") {
@@ -264,14 +261,13 @@ export default function Geo({ mode = "add" }) {
         lng: parseFloat(places[0].location.coordinates[0])
       }
     }
-    if (typeof thisLocation !== "undefined" && !isZoomed) {
+    if (typeof thisLocation !== "undefined") {
       setCenter(thisLocation);
       if (typeof location !== "undefined" && location !== "") {
         setZoom(16);
       } else {
         setZoom(12);
       }
-      setIsZoomed(true);
     }
   }, [places, location]);
 
