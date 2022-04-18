@@ -34,7 +34,8 @@ import 'moment/locale/si'
 import 'moment/locale/ta'
 
 import {
-  useParams
+  useParams,
+  useHistory
 } from "react-router-dom";
 import { Wrapper } from "@googlemaps/react-wrapper";
 
@@ -142,7 +143,7 @@ function generateMarker(rating, updated_at) {
   return svgMarker;
 }
 
-export default function Geo({ mode }) {
+export default function Geo({ mode = "add" }) {
   const classes = useStyles();
 
   const { t, i18n } = useTranslation(['geo']);
@@ -152,6 +153,7 @@ export default function Geo({ mode }) {
 	}, []);
 
   const { itemId } = useParams();
+  let browserHistory = useHistory();
 
   const _mapRender = (status) => {
     return <h1>{status}</h1>;
@@ -387,7 +389,9 @@ export default function Geo({ mode }) {
           color="secondary"
           className={classes.floatingButton}
           endIcon={<SendIcon />}
-          onClick={() => window.location.href = process.env.REACT_APP_BASENAME + "/create/" + itemId + "/" + selection.lat + "," + selection.lng}
+          onClick={() => {
+            browserHistory.push("/create/" + itemId + "/" + selection.lat + "," + selection.lng)
+          }}
         >
           {t("add_place")}
         </Button>

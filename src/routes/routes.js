@@ -41,8 +41,10 @@ export default function Routes() {
 				<Route path="/orders" component={Orders} isPrivate />
 				<Route path="/account" component={Account} isPrivate />
 				<Route path="/welcome" component={Welcome} isPrivate />
-				<Route path="/search/:itemId/:geoLocation?" isPrivate><Geo mode={"add"} /></Route>
-				<Route path="/add/:itemId/:geoLocation?" isPrivate><Geo mode={"add"} /></Route>
+				{/* <Route path="/search/:itemId/:geoLocation?" isPrivate><Geo mode={"add"} /></Route>
+				<Route path="/add/:itemId/:geoLocation?" isPrivate><Geo mode={"add"} /></Route> */}
+				<Route path="/search/:itemId/:geoLocation?" component={Geo} isPrivate />
+				<Route path="/add/:itemId/:geoLocation?" component={Geo} isPrivate />
 				<Route path="/create/:itemId?/:position?" component={AddPlace} isPrivate />
 
 				{/* redirect user to SignIn page if route does not exist and user is not authenticated */}
