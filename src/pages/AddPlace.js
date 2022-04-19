@@ -194,6 +194,7 @@ export default function AddPlace() {
                 />
                 <Typography variant="h6">{t("facilities")}</Typography>
                 <Grid container>
+                  <Typography variant="subtitle1">{t("facility_msg")}</Typography>
                   {Object.keys(facilityList).map((f, i) => (facilityList[f] !== null ?
                     <Grid item xs={12} lg={12} key={i}>
                       <FacilitySlider

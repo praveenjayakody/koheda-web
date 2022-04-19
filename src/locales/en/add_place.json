@@ -7,6 +7,8 @@
     "thank_you": "Thank you for the new addition! 🎉",
     "processing_msg": "The new place will be added to the map after processing",
 
+    "facility_msg": "Rate the facility according to the ease and chance of obtaining the essential",
+
     "errors": {
         "atleastOneFacility": "At least one facility should be present!"
     }
