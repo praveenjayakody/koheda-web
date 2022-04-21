@@ -319,7 +319,7 @@ export default function Geo({ mode = "add" }) {
     <main className={classes.content}>
       {loading ? <LinearProgress color="secondary" style={{ position: "absolute", width: "100%", zIndex: 9000 }} />: null}
       <Snackbar open={snackbar !== null} autoHideDuration={6000} onClose={() => setSnackbar(null)} message={snackbar} />
-      <Celebration open={celebration} onClose={() => { setCelebration(false); setSelectedMarker({}) }} hideButton={true} invisible={true} />
+      <Celebration open={celebration} onClose={() => { setCelebration(false); }} hideButton={true} invisible={true} />
       <Legend defaultOpen={(() => {
         const ret = xsto.load("legendOpened") === null;
 
