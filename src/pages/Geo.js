@@ -380,7 +380,7 @@ export default function Geo({ mode = "add" }) {
               {t("call")}
             </Button>
           }
-          <Button fullWidth endIcon={<ArrowForwardIcon />} onClick={() => {
+          <Button color={"primary"} variant="contained" fullWidth endIcon={<ArrowForwardIcon />} onClick={() => {
             let url = "";
             url = "https://www.google.com/maps/dir/?api=1&destination=" + selectedPlace.location.coordinates[1] +"," + selectedPlace.location.coordinates[0];
             window.open(url);
