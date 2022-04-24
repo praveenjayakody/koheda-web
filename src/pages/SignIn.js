@@ -16,8 +16,15 @@ import {
 	useHistory
 } from "react-router-dom";
 
+import Slider from "react-slick";
+
 import { languages } from "../locales/list"
 import "./SignIn.css"
+
+import slider1 from "../images/slider/1.png";
+import slider2 from "../images/slider/2.png";
+import slider3 from "../images/slider/3.png";
+import slider4 from "../images/slider/4.png";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -62,6 +69,41 @@ export default function SignIn() {
 		xsto.set("lang", language);
 	}, [language]);
 
+	const slickSettings = {
+		dots: true,
+		infinite: true,
+		speed: 500,
+		slidesToShow: 4,
+		slidesToScroll: 1,
+		infinite: false,
+		swipeToSlide: true,
+		centerMode: true,
+		responsive: [
+			{
+			  breakpoint: 1024,
+			  settings: {
+				slidesToShow: 1,
+				slidesToScroll: 1,
+				dots: true
+			  }
+			},
+			{
+			  breakpoint: 600,
+			  settings: {
+				slidesToShow: 1,
+				slidesToScroll: 4
+			  }
+			},
+			{
+			  breakpoint: 480,
+			  settings: {
+				slidesToShow: 1,
+				slidesToScroll: 1
+			  }
+			}
+		  ]
+	};
+
 	const _signIn = () => {
 		Auth.authenticate(email, password).then((result)=>{
 			console.log(result);
@@ -91,8 +133,84 @@ export default function SignIn() {
 	};
 
 
+	return (<>
+		<Slider {...slickSettings}>
+			<div>
+				<img src={slider1} />
+			</div>
+			<div>
+				<img src={slider2} />
+			</div>
+			<div>
+				<img src={slider3} />
+			</div>
+			<div>
+				<img src={slider4} />
+			</div>
+		</Slider>
+
+		<Grid container spacing={2} justifyContent="center" alignItems="center">
+			<Grid item container>
+
+			</Grid>
+			<Grid item container justifyContent="center">
+
+				<Grid item container justifyContent="center">
+					{/* <Grid item container justifyContent="center">
+						<img src={process.env.PUBLIC_URL + '/logo192.png'} className={"logo"}/>
+					</Grid> */}
+					<Grid item container lg={12} xs={12} justifyContent="center" style={{margin: 10}}>
+						{
+							languages.map((l, i) => <Button key={i} color="primary" onClick={() => setLanguage(l.code)}>{l.label}</Button>)
+						}
+					</Grid>
+					<Grid item container justifyContent="center" style={{marginBottom: 5}}>
+						<Typography variant="subtitle1" style={{textAlign: 'center'}}>
+							<Trans i18nKey={"home:tagline"}>Find <strong>essentials</strong> with where.lk</Trans>
+						</Typography>
+					</Grid>
+					<Grid item container xs={12}>
+
+					</Grid>
+					<Grid item container justifyContent="center">
+						<GoogleLogin
+							clientId={process.env.REACT_APP_GCLIENT_ID}
+							buttonText={t("signin_google")}
+							onSuccess={(e) => { _gSignIn(e.profileObj.email, e.tokenId); }}
+							onFailure={(e) => {
+								console.log(e);
+								if (
+									e.error != "idpiframe_initialization_failed" &&
+									e.error != "popup_closed_by_user"
+								) {
+									alert("Unexpected error occured!");
+								}
+							}}
+						/>
+					</Grid>
+					<Grid item container justifyContent="center" style={{marginTop: 30}} md={3}>
+						<Typography variant="caption" color="textSecondary" style={{textAlign: "center"}}>
+							<Trans i18nKey={"home:signin_policy"}>
+								text <Link href={process.env.PUBLIC_URL + "/tac.html"}>link</Link> j <Link href={process.env.PUBLIC_URL + "/pp.html"}>kk</Link>
+							</Trans>
+						</Typography>
+					</Grid>
+					<Grid item container justifyContent="center">
+						<Typography variant="caption">{}</Typography>
+					</Grid>
+					<Grid item>
+						<Typography variant="caption" color="textPrimary">v{process.env.REACT_APP_VERSION}</Typography>
+					</Grid>
+				</Grid>
+			</Grid>
+		</Grid>
+	</>);
+
 	return (
 		<Grid container spacing={2} justifyContent="center" alignItems="center" style={{ height: "100vh" }}>
+			<Grid item container>
+
+			</Grid>
 			<Grid item container justifyContent="center">
 
 				<Grid item container justifyContent="center">
@@ -108,6 +226,9 @@ export default function SignIn() {
 						<Typography variant="subtitle1">
 							<Trans i18nKey={"home:tagline"}>Find <strong>essentials</strong> with where.lk</Trans>
 						</Typography>
+					</Grid>
+					<Grid item container xs={12}>
+
 					</Grid>
 					<Grid item container justifyContent="center">
 						<GoogleLogin
