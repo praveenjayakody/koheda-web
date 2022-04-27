@@ -133,6 +133,64 @@ export default function SignIn() {
 	};
 
 
+	// return (
+	// 	<Grid container spacing={2} justifyContent="center" alignItems="center" style={{ height: "100vh" }}>
+	// 		<Grid item container>
+
+	// 		</Grid>
+	// 		<Grid item container justifyContent="center">
+
+	// 			<Grid item container justifyContent="center">
+	// 				<Grid item container justifyContent="center">
+	// 					<img src={process.env.PUBLIC_URL + '/logo192.png'} className={"logo"}/>
+	// 				</Grid>
+	// 				<Grid item container lg={12} xs={12} justifyContent="center" style={{margin: 10}}>
+	// 					{
+	// 						languages.map((l, i) => <Button key={i} color="primary" onClick={() => setLanguage(l.code)}>{l.label}</Button>)
+	// 					}
+	// 				</Grid>
+	// 				<Grid item container justifyContent="center" style={{marginBottom: 5}}>
+	// 					<Typography variant="subtitle1" style={{textAlign: "center"}}>
+	// 						<Trans i18nKey={"home:tagline"}>Find <strong>essentials</strong> with where.lk</Trans>
+	// 					</Typography>
+	// 				</Grid>
+	// 				<Grid item container xs={12}>
+
+	// 				</Grid>
+	// 				<Grid item container justifyContent="center">
+	// 					<GoogleLogin
+	// 						clientId={process.env.REACT_APP_GCLIENT_ID}
+	// 						buttonText={t("signin_google")}
+	// 						onSuccess={(e) => { _gSignIn(e.profileObj.email, e.tokenId); }}
+	// 						onFailure={(e) => {
+	// 							console.log(e);
+	// 							if (
+	// 								e.error != "idpiframe_initialization_failed" &&
+	// 								e.error != "popup_closed_by_user"
+	// 							) {
+	// 								alert("Unexpected error occured!");
+	// 							}
+	// 						}}
+	// 					/>
+	// 				</Grid>
+	// 				<Grid item container justifyContent="center" style={{marginTop: 30}} md={3}>
+	// 					<Typography variant="caption" color="textSecondary" style={{textAlign: "center"}}>
+	// 						<Trans i18nKey={"home:signin_policy"}>
+	// 							text <Link href={process.env.PUBLIC_URL + "/tac.html"}>link</Link> j <Link href={process.env.PUBLIC_URL + "/pp.html"}>kk</Link>
+	// 						</Trans>
+	// 					</Typography>
+	// 				</Grid>
+	// 				<Grid item container justifyContent="center">
+	// 					<Typography variant="caption">{}</Typography>
+	// 				</Grid>
+	// 				<Grid item>
+	// 					<Typography variant="caption" color="textPrimary">v{process.env.REACT_APP_VERSION}</Typography>
+	// 				</Grid>
+	// 			</Grid>
+	// 		</Grid>
+	// 	</Grid>
+	// );
+
 	return (<>
 		<Slider {...slickSettings}>
 			<div>
@@ -205,62 +263,4 @@ export default function SignIn() {
 			</Grid>
 		</Grid>
 	</>);
-
-	return (
-		<Grid container spacing={2} justifyContent="center" alignItems="center" style={{ height: "100vh" }}>
-			<Grid item container>
-
-			</Grid>
-			<Grid item container justifyContent="center">
-
-				<Grid item container justifyContent="center">
-					<Grid item container justifyContent="center">
-						<img src={process.env.PUBLIC_URL + '/logo192.png'} className={"logo"}/>
-					</Grid>
-					<Grid item container lg={12} xs={12} justifyContent="center" style={{margin: 10}}>
-						{
-							languages.map((l, i) => <Button key={i} color="primary" onClick={() => setLanguage(l.code)}>{l.label}</Button>)
-						}
-					</Grid>
-					<Grid item container justifyContent="center" style={{marginBottom: 5}}>
-						<Typography variant="subtitle1">
-							<Trans i18nKey={"home:tagline"}>Find <strong>essentials</strong> with where.lk</Trans>
-						</Typography>
-					</Grid>
-					<Grid item container xs={12}>
-
-					</Grid>
-					<Grid item container justifyContent="center">
-						<GoogleLogin
-							clientId={process.env.REACT_APP_GCLIENT_ID}
-							buttonText={t("signin_google")}
-							onSuccess={(e) => { _gSignIn(e.profileObj.email, e.tokenId); }}
-							onFailure={(e) => {
-								console.log(e);
-								if (
-									e.error != "idpiframe_initialization_failed" &&
-									e.error != "popup_closed_by_user"
-								) {
-									alert("Unexpected error occured!");
-								}
-							}}
-						/>
-					</Grid>
-					<Grid item container justifyContent="center" style={{marginTop: 30}} md={3}>
-						<Typography variant="caption" color="textSecondary" style={{textAlign: "center"}}>
-							<Trans i18nKey={"home:signin_policy"}>
-								text <Link href={process.env.PUBLIC_URL + "/tac.html"}>link</Link> j <Link href={process.env.PUBLIC_URL + "/pp.html"}>kk</Link>
-							</Trans>
-						</Typography>
-					</Grid>
-					<Grid item container justifyContent="center">
-						<Typography variant="caption">{}</Typography>
-					</Grid>
-					<Grid item>
-						<Typography variant="caption" color="textPrimary">v{process.env.REACT_APP_VERSION}</Typography>
-					</Grid>
-				</Grid>
-			</Grid>
-		</Grid>
-	);
 }
