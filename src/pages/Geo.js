@@ -5,6 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import Snackbar from '@material-ui/core/Snackbar';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
@@ -46,6 +47,8 @@ import SendIcon from '@material-ui/icons/Send';
 
 import myLocationIcon from "../images/my-location.png"
 import Legend from "../components/Legend.js";
+
+const itemList = require("../util/Items");
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -302,10 +305,22 @@ export default function Geo({ mode = "add" }) {
         });
         if (typeof resp.errors === 'undefined') {
           const placeIndex = places.findIndex((p) => p.id === selectedPlace.id);
-          const facilityIndex = places[placeIndex].facilities.findIndex((f) => f.facility === facilityId);
+          let facilityIndex = places[placeIndex].facilities.findIndex((f) => f.facility === facilityId);
 
-          places[placeIndex].facilities[facilityIndex].quality = newRating*2;
-          places[placeIndex].facilities[facilityIndex].updated_at = (new Date()).toISOString();
+          // }
+          if (facilityIndex < 0) {
+            // probably a new facility
+            facilityIndex = places[placeIndex].facilities.length;
+            console.log(facilityIndex);
+          }
+
+          places[placeIndex].facilities[facilityIndex] = {
+            ...places[placeIndex].facilities[facilityIndex],
+            facility: facilityId, // if the facility is a new addition, this would also need to be added
+            quality: newRating*2,
+            updated_at: (new Date()).toISOString()
+          };
+          console.log(JSON.parse(JSON.stringify(places)));
 
           setPlaces(places);
 
@@ -341,29 +356,49 @@ export default function Geo({ mode = "add" }) {
         <DialogContent>
           <div style={{textAlign: "center"}}>
             {
-              typeof selectedPlace.updated_at != "undefined" ?
+              typeof selectedPlace?.facilities?.find(e => e.facility == facilityId) !== "undefined" ?
               _getLastUpdated(selectedPlace.facilities.find(e => e.facility == facilityId).updated_at)
-              : ""
+              :
+              <Grid container justifyContent="center" direction="column">
+                <Grid item><Typography variant="subtitle1" style={{ fontWeight: 800, color: "black" }}>{t("notYet")}</Typography></Grid>
+              </Grid>
             }
           </div>
           <Grid container alignItems="center" direction="column">
             <Grid item style={{ marginBottom: 10 }}>
               <Select
                 value={facilityId}
-                onChange={(e) => setFacilityId(e.target.value)}
+                onChange={(e) => typeof e.target.value !== "undefined" && setFacilityId(e.target.value)}
               >
-                {typeof selectedPlace.facilities !== "undefined" ? selectedPlace.facilities.map((f, i) => (
+                {/* {typeof selectedPlace.facilities !== "undefined" ? selectedPlace.facilities.map((f, i) => (
                   <MenuItem key={i} value={f.facility}>{t("general:item." + f.facility)}</MenuItem>
-                )): null}
+                )): null} */}
+                <ListSubheader>{t("availableFacilities")}</ListSubheader>
+                {typeof selectedPlace.facilities !== "undefined" && itemList.map((f, i) => (
+                  typeof selectedPlace.facilities.find((thisFacility) => f === thisFacility.facility) !== "undefined" ? 
+                  <MenuItem key={i} value={f}>{t("general:item." + f)}</MenuItem>: null
+                ))}
+
+                {selectedPlace.facilities?.length < itemList.length ?
+                  <ListSubheader>{t("unavailableFacilities")}</ListSubheader>: null
+                }
+                {typeof selectedPlace.facilities !== "undefined" && itemList.map((f, i) => (
+                  typeof selectedPlace.facilities.find((thisFacility) => f === thisFacility.facility) === "undefined" ? 
+                  <MenuItem key={i} value={f}>{t("general:item." + f)}</MenuItem>: null
+                ))}
               </Select>
             </Grid>
             <Grid item>
               <Rating 
                 value={(() => {
-                  let rating = typeof selectedPlace.facilities !== "undefined" ?
-                  selectedPlace.facilities.find(e => e.facility == facilityId).quality/2
-                  :0;
-                  if (rating == 0) rating = 1;
+                  let rating = 0;
+                  
+                  if (typeof selectedPlace?.facilities?.find(e => e.facility == facilityId) !== "undefined") {
+                    rating = typeof selectedPlace.facilities !== "undefined" ?
+                    selectedPlace.facilities.find(e => e.facility == facilityId).quality/2
+                    :0;
+                    if (rating == 0) rating = 1;
+                  }
                   return rating;
                 })()}
                 IconContainerComponent={IconContainer}
@@ -372,7 +407,11 @@ export default function Geo({ mode = "add" }) {
               />
             </Grid>
             <Grid item>
+              {typeof selectedPlace?.facilities?.find(e => e.facility == facilityId) !== "undefined" ?
               <Typography variant="caption" color="textSecondary">{t("encourage_rating")}</Typography>
+              :
+              <Typography variant="caption" color="textSecondary">{t("new_rating")}</Typography>
+              }
             </Grid>
           </Grid>
         </DialogContent>

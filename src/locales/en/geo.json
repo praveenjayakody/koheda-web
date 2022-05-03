@@ -15,5 +15,10 @@
     "faded": "A solid outline means the place was updated recently. Faded outline means outdated",
     "click": "Press on a marker to view more details about the place",
     "add": "Press anywhere on the map to add a new place"
-  }
+  },
+
+  "availableFacilities": "Available Facilities",
+  "unavailableFacilities": "Unavailable Facilities",
+  "notYet": "Not yet added",
+  "new_rating": "Add new rating by clicking on the emoticons!"
 }
