@@ -136,7 +136,7 @@ function generateMarker(rating, updated_at) {
 
   const svgMarker = {
     path: "M 10.453 14.016 q 2.906 0 4.945 2.039 t 2.039 4.945 q 0 1.453 -0.727 3.328 t -1.758 3.516 t -2.039 3.07 t -1.711 2.273 l -0.75 0.797 q -0.281 -0.328 -0.75 -0.867 t -1.688 -2.156 t -2.133 -3.141 t -1.664 -3.445 t -0.75 -3.375 q 0 -2.906 2.039 -4.945 t 4.945 -2.039 z",
-    fillColor: (timeRating < 0.4 && rating > 6) ? "#ffa500": colorGradient.setGradient("a40d36", "ffa500", "00ff00").setMidpoint(10).getColor(rating == 0 ? 1: rating),
+    fillColor: (timeRating <= 0.55 && rating > 6) ? "#ffa500": colorGradient.setGradient("a40d36", "ffa500", "00ff00").setMidpoint(10).getColor(rating == 0 ? 1: rating),
     // fillColor: colorGradient.setGradient("FF0000", "ffa500", "00ff00").setMidpoint(10).getColor(rating == 0 ? 1: rating),
     // fillColor: colorGradient.setGradient("a40d36", "ff7701", "ffbe00", "aed374", "01514e").setMidpoint(5).getColor(rating == 0 ? 1: rating/5),
     // fillColor: colors[Math.round(rating/2)],
