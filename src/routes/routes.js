@@ -12,6 +12,7 @@ import Account from "../pages/Account.js";
 import Welcome from "../pages/Welcome.js";
 import Geo from "../pages/Geo.js";
 import AddPlace from "../pages/AddPlace.js";
+import OneClick from "../pages/OneClick.js";
 
 export default function Routes() {
 	const [loading, setLoading] = useState(true);
@@ -36,6 +37,7 @@ export default function Routes() {
 		<BrowserRouter basename={process.env.REACT_APP_BASENAME}>
 			<Switch>
 				<Route path="/" exact component={SignIn} />
+				<Route path="/one-click/:lang" component={OneClick} force />
 
 				<Route path="/buy" component={Buy} isPrivate />
 				<Route path="/orders" component={Orders} isPrivate />
