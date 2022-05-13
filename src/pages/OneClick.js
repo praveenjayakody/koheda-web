@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function OneClick() {
 	const styles = useStyles();
-	const redirectUrl = `${(window.location.protocol.indexOf("https") > -1 ? "https": "http")}://${window.location.host}/app/`;
+	const redirectUrl = `${(window.location.protocol.indexOf("https") > -1 ? "https": "http")}://${window.location.host}/app/?s=one-click`;
 
 	const { lang } = useParams();
 
