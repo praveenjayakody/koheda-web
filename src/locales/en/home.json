@@ -4,5 +4,7 @@
   "password": "Password",
   "signin_google": "Sign in with Google",
   "signin_policy": "By signing in, you are confirming that you have read, understood and agree to the <1>terms and conditions</1> and <3>privacy policy</3>",
-  "tagline": "Find <1>essentials</1> with where.lk"
+  "tagline": "Find <1>essentials</1> with where.lk",
+
+  "openPage": "Open search page"
 }
