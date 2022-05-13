@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function OneClick() {
 	const styles = useStyles();
-	const redirectUrl = "https://where.lk/app/";
+	const redirectUrl = `${(window.location.protocol.indexOf("https") > -1 ? "https": "http")}://${window.location.host}/app/`;
 
 	const { lang } = useParams();
 
@@ -50,7 +50,7 @@ export default function OneClick() {
 			} else {
 				xsto.set("token", result.token);
 				setLoggedIn(true);
-				window.open(redirectUrl);
+				window.parent.location.href = redirectUrl;
 			}
 		});
 	};
@@ -81,7 +81,7 @@ export default function OneClick() {
 						<Button
 							variant="contained"
 							color="primary"
-							onClick={() => { window.open(redirectUrl) }}
+							onClick={() => { window.parent.location.href = redirectUrl }}
 						>
 							{t("openPage")}
 						</Button>
