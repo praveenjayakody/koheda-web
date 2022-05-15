@@ -8,6 +8,7 @@ export default function RouteWrapper({
   component: Component,
   isPrivate,
   children,
+  force, // even if signed in but not private, use this route
   ...rest
 }) {
   const token = xsto.get("token");
@@ -18,7 +19,7 @@ export default function RouteWrapper({
    * Redirect user to SignIn page if he tries to access a private route
    * without authentication.
    */
-  if (isPrivate && !signed) {
+  if (isPrivate && !signed && !force) {
     return <Redirect to="/" />;
   }
 
@@ -26,7 +27,7 @@ export default function RouteWrapper({
    * Redirect user to Main page if he tries to access a non private route
    * (SignIn or SignUp) after being authenticated.
    */
-  if (!isPrivate && signed) {
+  if (!isPrivate && signed && !force) {
     return <Redirect to="/welcome" />;
   }
 
