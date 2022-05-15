@@ -90,6 +90,8 @@ export default function SignIn() {
 		});
 	};
 
+	// if true, that means loaded through Facebook's in-app browser
+	const isFb = navigator.userAgent.indexOf("FBAN") != -1 || navigator.userAgent.indexOf("FBAV") != -1;
 
 	return (
 		<Grid container spacing={2} justifyContent="center" alignItems="center" style={{ height: "100vh" }}>
@@ -109,6 +111,12 @@ export default function SignIn() {
 							<Trans i18nKey={"home:tagline"}>Find <strong>essentials</strong> with where.lk</Trans>
 						</Typography>
 					</Grid>
+					{isFb ? <Grid item container justifyContent="center" style={{padding: 20}} md={3}>
+						<Typography className="attention" variant="caption" style={{textAlign: "center"}}>
+							If the Google Login does not work, please open the app on the web browser. Facebook browser prevents logging in via Google. <br />
+							Google Login ක්‍රියා නොකරන්නේ නම්, කරුණාකර වෙබ් බ්‍රවුසරයේ වෙබ් අඩවිය විවෘත කරන්න. ෆේස්බුක් බ්‍රව්සරය ගූගල් හරහා ලොග් වීම වළක්වයි
+						</Typography>
+					</Grid>: null}
 					<Grid item container justifyContent="center">
 						<GoogleLogin
 							clientId={process.env.REACT_APP_GCLIENT_ID}
