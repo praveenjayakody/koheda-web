@@ -32,6 +32,9 @@ export default function BigButton({ children, onClick }) {
     if (children.indexOf("petrol") > -1 || children.indexOf("diesel") > -1) {
       setIcon("fuel");
     }
+    if (children.indexOf("dansal") > -1) {
+      setIcon("fork");
+    }
   }, [children]);
 
   return (
