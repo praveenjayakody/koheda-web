@@ -56,6 +56,33 @@ export class Auth {
             console.error(error, "Api.gauthenticate");
         }
     }
+    static async xauthenticate (email, idToken, name, type = "fb") {
+        /**
+         * xauthenticate starts flow of backend auth using idToken returned from third-party
+         */
+        const cachePath = "user-info";
+        try {
+            let response = await fetch(this.serverUrl + 'api/auth/xauth', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: (new URLSearchParams({
+                    email: email,
+                    token: idToken,
+                    type: type,
+                    name: name
+                })).toString()
+            });
+            let responseJson = await response.json();
+            XCache.store(cachePath, responseJson.user);
+            this.userInfo = responseJson.user;
+            return responseJson;
+        } catch (error) {
+            console.error(error, "Api.gauthenticate");
+        }
+    }
     static async verifyToken () {
         const userToken = xsto.get("token");
         const cachePath = "user-info";

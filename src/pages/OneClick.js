@@ -55,6 +55,19 @@ export default function OneClick() {
 			}
 		});
 	};
+	const _xSignIn = (email, idToken, type) => {
+		Auth.xauthenticate(email, idToken, type).then((result)=>{
+			console.log(result);
+			if (typeof result.error !== "undefined") {
+				//an error has ocurred
+				alert("Invalid user details");
+			} else {
+				xsto.set("token", result.token);
+				setLoggedIn(true);
+				window.parent.location.href = redirectUrl;
+			}
+		});
+	};
 
 	// if true, that means loaded through Facebook's in-app browser
 	const isFb = navigator.userAgent.indexOf("FBAN") != -1 || navigator.userAgent.indexOf("FBAV") != -1;
@@ -87,8 +100,9 @@ export default function OneClick() {
 								appId={process.env.REACT_APP_FBAPP_ID}
 								fields="name,email,picture"
 								size="large"
+								isMobile={false} // force non-mobile to load login in popup window; login can't login in iframe
 								onClick={(e) => console.log("onclick", e)}
-								callback={(e) => console.log("callback", e)}
+								callback={(e) => { _xSignIn(e.email, e.accessToken, e.name); }}
 							/>
 							)
 						:
