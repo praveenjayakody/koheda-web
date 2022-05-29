@@ -8,6 +8,7 @@ import { XStorage as xsto } from '../util/XStorage.js'
 import { Auth } from '../util/Api/Auth.js'
 
 import { GoogleLogin } from 'react-google-login';
+import FacebookLogin from 'react-facebook-login';
 
 import { useTranslation, Trans } from "react-i18next";
 import {
@@ -55,6 +56,9 @@ export default function OneClick() {
 		});
 	};
 
+	// if true, that means loaded through Facebook's in-app browser
+	const isFb = navigator.userAgent.indexOf("FBAN") != -1 || navigator.userAgent.indexOf("FBAV") != -1;
+
 
 	return (
 		<Grid container spacing={2} justifyContent="center" alignItems="center" style={{ height: "100vh" }}>
@@ -63,20 +67,30 @@ export default function OneClick() {
 				<Grid item container justifyContent="center">
 					<Grid item container justifyContent="center">
 						{typeof Auth.userInfo === "undefined" && !loggedIn ? 
-						<GoogleLogin
-							clientId={process.env.REACT_APP_GCLIENT_ID}
-							buttonText={t("signin_google")}
-							onSuccess={(e) => { _gSignIn(e.profileObj.email, e.tokenId); }}
-							onFailure={(e) => {
-								console.log(e);
-								if (
-									e.error != "idpiframe_initialization_failed" &&
-									e.error != "popup_closed_by_user"
-								) {
-									alert("Unexpected error occured!");
-								}
-							}}
-						/>
+							(!isFb ? 
+							<GoogleLogin
+								clientId={process.env.REACT_APP_GCLIENT_ID}
+								buttonText={t("signin_google")}
+								onSuccess={(e) => { _gSignIn(e.profileObj.email, e.tokenId); }}
+								onFailure={(e) => {
+									console.log(e);
+									if (
+										e.error != "idpiframe_initialization_failed" &&
+										e.error != "popup_closed_by_user"
+									) {
+										alert("Unexpected error occured!");
+									}
+								}}
+							/>
+							:
+							<FacebookLogin
+								appId={process.env.REACT_APP_FBAPP_ID}
+								fields="name,email,picture"
+								size="large"
+								onClick={(e) => console.log("onclick", e)}
+								callback={(e) => console.log("callback", e)}
+							/>
+							)
 						:
 						<Button
 							variant="contained"
