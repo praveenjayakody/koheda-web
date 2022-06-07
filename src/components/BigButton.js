@@ -48,7 +48,7 @@ export default function BigButton({ children, onClick }) {
           <img src={require("../images/facilities/" + icon + ".png")} width={50} />
         </Grid>
         <Grid item>
-          <Typography variant="h4">{t("item." + children)}</Typography>
+          <Typography variant="h5">{t("item." + children)}</Typography>
         </Grid>
       </Grid>
     </ButtonBase>

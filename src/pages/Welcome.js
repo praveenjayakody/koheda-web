@@ -48,7 +48,10 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 0,
     color: "rgba(0, 0, 0, 0.5)",
     fontWeight: 500,
-    fontSize: "45px"
+    fontSize: "45px",
+    '@media (max-width: 768px)': {
+      fontSize: 25,
+    }
   },
   whereBranding: {
     margin: 0,
@@ -56,7 +59,10 @@ const useStyles = makeStyles((theme) => ({
     opacity: 0.9,
     fontFamily: "Montserrat",
     fontWeight: 500,
-    fontSize: "75px"
+    fontSize: "75px",
+    '@media (max-width: 768px)': {
+      fontSize: 35
+    }
   },
   whereDropdown: {
     fontFamily: "Montserrat",
@@ -137,7 +143,7 @@ export default function Welcome() {
                   style={{ transformOrigin: '0 0 0' }}
                   timeout={1000 * i * 0.5}
                 >
-                  <Grid item xs={12} lg={3}>
+                  <Grid item xs={6} lg={3}>
                     <BigButton onClick={() => {
                       let url = mode + "/" + o;
 
