@@ -7,14 +7,15 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 import Snackbar from '@material-ui/core/Snackbar';
 
 import Grow from '@material-ui/core/Grow';
 import Slide from '@material-ui/core/Slide';
 
 import { XStorage as xsto } from '../util/XStorage.js'
+import { XPush as xpush } from '../util/XPush.js'
 
 import { useTranslation } from "react-i18next";
 import { Auth } from "../util/Api/Auth";
@@ -69,6 +70,11 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 500,
     fontSize: "75px",
     color: "red"
+  },
+  notifyContainer: {
+    background: '#e6dd8f',
+    padding: "10px 10px 10px 20px",
+    borderRadius: 10
   }
 }));
 
@@ -92,6 +98,35 @@ export default function Welcome() {
   const [items, setItems] = useState(itemList);
   useEffect(() => {
   }, []);
+
+  const [notify, setNotify] = useState(false);
+  useEffect(() => {
+    (async () => {
+      const s = await xpush.getStatus();
+      setNotify(({
+        "granted": true,
+        "denied": null,
+        "prompt": false
+      })[s]);
+    })();
+  }, []);
+  const _changeNotify = async () => {
+    if (!notify) {
+      // flow to turn notifications on
+      try {
+        const pushSub = await xpush.subscribe();
+        console.log(pushSub);
+      } catch (e) {
+        console.log(e);
+        setNotify(null);
+      }
+    } else {
+      // flow to turn notifications off
+      // TODO: no point of unregistering here as it will be registerd on ext window load
+      console.log("Unregistered");
+      setNotify(false);
+    }
+  }
 
   const _signOut = async () => {
     await Auth.logOut();
@@ -118,7 +153,7 @@ export default function Welcome() {
         </Grid>
       </Container>
       <Container maxWidth="lg" className={classes.container}>
-        <Grid container direction="column">
+        <Grid container direction="column" alignItems="center">
 
           {/* {Auth.userInfo.permissions.indexOf("add locations") > -1 ?
             <Grid item container justifyContent="center">
@@ -128,6 +163,19 @@ export default function Welcome() {
               </ButtonGroup>
             </Grid>
           : null} */}
+          <Grid item className={classes.notifyContainer} lg={6}>
+            <FormControlLabel
+              disabled={notify === null}
+              control={
+                <Switch
+                  checked={Boolean(notify)}
+                  onChange={_changeNotify}
+                  color="primary"
+                />
+              }
+              label={t("welcome:notify")}
+            />
+          </Grid>
           <Grid item>
             <p className={classes.hiMessage}>{t("welcome:hi", {name: Auth.userInfo.name.split(" ")[0]})}</p>
           </Grid>

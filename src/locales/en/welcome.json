@@ -5,6 +5,7 @@
     "placeholder": "Select Essentials...",
     "add_locations": "Add Locations",
     "search_locations": "Search Locations",
+    "notify": "Notify me on fuel updates instantly!",
 
     "location_errors": {
         "denied": "Geolocation will not be used",
