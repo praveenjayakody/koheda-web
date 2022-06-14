@@ -22,6 +22,10 @@
 ## Terms and Conditions and Privacy Policy
 * Generated using https://policymaker.io/terms-conditions-ready/ and https://policymaker.io/privacy-policy-ready/
 
+## Push notifications
+* Generate the application server key using https://web-push-codelab.glitch.me/
+    + Can use this to test push notifications as well
+
 ## Service workers
 * A __service-worker.js__ file is created by default CRA in the build directory
     + If you want to use a custom service worker, create a JS file in __public__ and make sure to link this file in __serviceWorkerRegistration.js__
