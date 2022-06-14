@@ -21,3 +21,8 @@
 
 ## Terms and Conditions and Privacy Policy
 * Generated using https://policymaker.io/terms-conditions-ready/ and https://policymaker.io/privacy-policy-ready/
+
+## Debug service workers
+1 `npm run build`
+2 Copy build folder to localhost with MAMP server runnning
+3 Delete the .htaccess file
